@@ -9,5 +9,5 @@ public class TechnomindApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TechnomindApplication.class, args);
 	}
-
+//Repo sirve
 }
