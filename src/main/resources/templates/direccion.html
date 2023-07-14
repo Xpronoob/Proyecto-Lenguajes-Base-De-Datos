@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dirección</title>
+</head>
+<body>
+    <h1>Información de dirección</h1>
+    <p>[[${mensaje}]]</p>
+
+    <form action="/direcciones" method="post">
+        <label for="referencias">Referencias:</label>
+        <input type="text" id="referencias" name="referencias" required>
+        <button type="submit">Agregar Dirección</button>
+    </form>
+</body>
+</html>
