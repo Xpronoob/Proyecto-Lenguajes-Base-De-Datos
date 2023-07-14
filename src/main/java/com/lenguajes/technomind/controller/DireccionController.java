@@ -2,6 +2,7 @@ package com.lenguajes.technomind.controller;
 
 import com.lenguajes.technomind.Service.DireccionService;
 import com.lenguajes.technomind.entity.Direccion;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +23,7 @@ public class DireccionController {
 
     @PostMapping("/direcciones")
     public String agregarDireccion(@RequestParam("referencias") String referencias, Model model) {
-        Direccion nuevaDireccion = new Direccion();
-        nuevaDireccion.setReferencias(referencias);
+        String nuevaDireccion = referencias;
 
         direccionService.agregarDireccion(nuevaDireccion);
 
@@ -31,10 +31,17 @@ public class DireccionController {
         return "direccion";
     }
 
+//    @GetMapping("/direcciones")
+//    public String mostrarFormulario() {
+//        
+//        return "direccion.html";
+//    }
+    
     @GetMapping("/direcciones")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("direccion", new Direccion());
-        return "direccion.html";
+    public String obtenerDirecciones(Model model) {
+        List<Direccion> direcciones = direccionService.obtenerDirecciones();
+        model.addAttribute("direcciones", direcciones);
+        return "direccion.html"; // nombre de la vista Thymeleaf
     }
 
     // Resto del código del controlador

@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Dirección</title>
-</head>
-<body>
-    <h1>Información de dirección</h1>
-    <p>[[${mensaje}]]</p>
-
-    <form action="/direcciones" method="post">
-        <label for="referencias">Referencias:</label>
-        <input type="text" id="referencias" name="referencias" required>
-        <button type="submit">Agregar Dirección</button>
-    </form>
-</body>
-</html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <html>
+        <head>
+            <title>DIRECCION CRUD</title>
+        </head>
+        <body>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Dirección</th>
+                        <th>Referencias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="direccion : ${direcciones}">
+                        <td th:text="${direccion.idDireccion}"></td>
+                        <td th:text="${direccion.referencias}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h1>Agregar</h1>
+            <form action="/direcciones" method="post">
+                <label for="referencias">Referencias:</label>
+                <input type="text" id="referencias" name="referencias" required>
+                <button type="submit">Agregar Dirección</button>
+            </form>
+            <p>[[${mensaje}]]</p>
+        </body>
+    </html>
