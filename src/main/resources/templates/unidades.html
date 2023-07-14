@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unidad CRUD</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Placa</th>
+                <th>ID Estado Unidad</th>
+                <th>ID Empresa</th>
+                <th>Unidad Year</th>
+                <th>Capacidad Carga</th>
+                <th>Chasis</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí puedes iterar sobre la lista de unidades y mostrar los datos en la tabla -->
+            <!-- Por ejemplo, si estás usando Thymeleaf, podrías usar una estructura th:each -->
+            <!-- Supongamos que tienes una lista llamada "unidades" que contiene objetos con los atributos mencionados -->
+            <tr th:each="unidad : ${unidades}">
+                <td th:text="${unidad.idPlaca}"></td>
+                <td th:text="${unidad.idEstadoUnidad}"></td>
+                <td th:text="${unidad.idEmpresa}"></td>
+                <td th:text="${unidad.unidadYear}"></td>
+                <td th:text="${unidad.capacidadCarga}"></td>
+                <td th:text="${unidad.chasis}"></td>
+                <td th:text="${unidad.descripcion}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <h1>Agregar Unidad</h1>
+    <form action="/unidades" method="post">
+        <label for="id_estado_unidad">ID Estado Unidad:</label>
+        <input type="number" id="id_estado_unidad" name="id_estado_unidad" required><br>
+        <label for="id_empresa">ID Empresa:</label>
+        <input type="number" id="id_empresa" name="id_empresa" required><br>
+        <label for="unidad_year">Unidad Year:</label>
+        <input type="text" id="unidad_year" name="unidad_year" required><br>
+        <label for="capacidad_carga">Capacidad Carga:</label>
+        <input type="text" id="capacidad_carga" name="capacidad_carga" required><br>
+        <label for="chasis">Chasis:</label>
+        <input type="text" id="chasis" name="chasis" required><br>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" required><br>
+        <button type="submit">Agregar Unidad</button>
+    </form>
+    <p>[[${mensaje}]]</p>
+</body>
+</html>
+
