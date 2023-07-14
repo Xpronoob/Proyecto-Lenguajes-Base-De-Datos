@@ -5,6 +5,8 @@
             <title>DIRECCION CRUD</title>
         </head>
         <body>
+
+            <h1>READ</h1>
             <table>
                 <thead>
                     <tr>
@@ -19,12 +21,37 @@
                     </tr>
                 </tbody>
             </table>
-            <h1>Agregar</h1>
-            <form action="/direcciones" method="post">
-                <label for="referencias">Referencias:</label>
+
+            <h1>CREATE</h1>
+            <form action="/direcciones/agregar" method="post">
+                <label for="referencias">Direccion:</label>
                 <input type="text" id="referencias" name="referencias" required>
                 <button type="submit">Agregar Dirección</button>
             </form>
             <p>[[${mensaje}]]</p>
+
+            <h1>UPDATE</h1>
+            <form onsubmit="return redireccionar(event)">
+                <label for="numero">ID:</label>
+                <input type="number" id="numero" required>
+                <button type="submit">Ir a editar</button>
+            </form>
+
+            <script>
+                function redireccionar(event) {
+                    event.preventDefault();
+                    var numero = document.getElementById("numero").value;
+                    window.location.href = "/direcciones/" + numero + "/editar";
+                    return false;
+                }
+            </script>
+
+            <h1>DELETE</h1>
+            <form th:action="@{/direcciones/eliminar}" method="post">
+                <label for="idEliminar">ID:</label>
+                <input type="number" id="idEliminar" name="idEliminar" required>
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+
         </body>
     </html>

@@ -32,4 +32,17 @@ public class DireccionService {
     public List<Direccion> obtenerDirecciones() {
         return direccionRepository.obtenerDirecciones();
     }
+
+    public void actualizarDireccion(Long idDireccion, String referencias) {
+        direccionRepository.actualizarDireccion(idDireccion, referencias);
+    }
+
+    public Direccion obtenerDireccionPorId(Long id) {
+        return direccionRepository.findById(id).orElse(null);
+    }
+
+    public void eliminarDireccion(Long idDireccion) {
+        direccionRepository.eliminarDireccion(idDireccion);
+    }
+
 }

@@ -17,6 +17,24 @@ import jakarta.persistence.Table;
             @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
         }
 )
+
+@NamedStoredProcedureQuery(
+        name = "actualizarDireccion",
+        procedureName = "ACTUALIZAR_DIRECCION",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id_direccion", type = Long.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_referencias", type = String.class)
+        }
+)
+
+@NamedStoredProcedureQuery(
+        name = "eliminarDireccion",
+        procedureName = "ELIMINAR_DIRECCION",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id_direccion", type = Long.class)
+        }
+)
+
 @Table(name = "DIRECCION")
 @Entity
 public class Direccion {
