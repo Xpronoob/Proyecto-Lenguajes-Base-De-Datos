@@ -585,6 +585,64 @@ DROP VIEW NOMBRE_VISTA;
 --------------------------------------------------------------------------------------------------------------------------------------
 
 
+-
+
+--------------------------------------------------------------------------------------------------------------------------------------
+    --FUNCIONES (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+
+    CREATE OR REPLACE FUNCTION ObtenerInformacionTablas RETURN SYS_REFCURSOR IS
+  c_result SYS_REFCURSOR;
+BEGIN
+  OPEN c_result FOR
+    SELECT 'Direccion' AS tabla, id_direccion AS id, referencias AS informacion FROM Direccion
+    UNION ALL
+    SELECT 'Tipo_Empresa' AS tabla, id_tipo_empresa AS id, tipo_empresa AS informacion FROM Tipo_Empresa
+    UNION ALL
+    SELECT 'Estado_Unidad' AS tabla, id_estado_unidad AS id, estado_unidad AS informacion FROM Estado_Unidad
+    UNION ALL
+    SELECT 'Empleado' AS tabla, id_empleado AS id, nombre_empleado || ' ' || apellido_empleado AS informacion FROM Empleado
+    UNION ALL
+    SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', Identificación: ' || identificacion AS informacion FROM Empresa
+    UNION ALL
+    SELECT 'Unidades' AS tabla, id_placa AS id, CONCAT('Año: ', unidad_year, ', Capacidad de carga: ', capacidad_carga) AS informacion FROM Unidades
+    UNION ALL
+    SELECT 'Pedidos' AS tabla, id_pedido AS id, CONCAT('Cliente: ', nombre_empresa_cliente, ', Fecha ingreso: ', fecha_ingreso, ', Fecha límite: ', limite_entrega) AS informacion FROM Pedidos;
+
+  RETURN c_result;
+END;
+/
+
+
+    DECLARE
+  v_cursor SYS_REFCURSOR;
+  v_tabla VARCHAR2(100);
+  v_id NUMBER;
+  v_informacion VARCHAR2(4000);
+BEGIN
+  v_cursor := ObtenerInformacionTablas;
+
+  LOOP
+    FETCH v_cursor INTO v_tabla, v_id, v_informacion;
+    EXIT WHEN v_cursor%NOTFOUND;
+    -- Realiza las operaciones necesarias con los datos obtenidos
+    -- Aquí puedes imprimir los valores, almacenarlos en variables, etc.
+    DBMS_OUTPUT.PUT_LINE('Tabla: ' || v_tabla || ', ID: ' || v_id || ', Información: ' || v_informacion);
+  END LOOP;
+
+  CLOSE v_cursor;
+END;
+/
+
+------------------------------
+    --FINALIZA FUNCIONES
+------------------------------
+    --FINALIZA FUNCIONES
+------------------------------
+    --FINALIZA FUNCIONES
+    
+
+
 
 ------------OLD---------------OLD------------------OLD-----------------------OLD
 select * from EMPLEADO;
