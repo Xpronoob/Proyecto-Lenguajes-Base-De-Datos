@@ -35,7 +35,7 @@ public class DireccionController {
     public String obtenerDirecciones(Model model) {
         List<Direccion> direcciones = direccionService.obtenerDirecciones();
         model.addAttribute("direcciones", direcciones);
-        return "direccion.html"; // nombre de la vista Thymeleaf
+        return "direccion.html";
     }
 
     @GetMapping("/{id}/editar")
@@ -50,13 +50,24 @@ public class DireccionController {
     public String guardarDireccionEditada(@PathVariable("id") Long id,
             @RequestParam("referencias") String referencias) {
         direccionService.actualizarDireccion(id, referencias);
-        return "redirect:/direcciones/"; // Redireccionar a la página de direcciones después de la actualización
+        return "redirect:/direcciones/";
     }
 
     @PostMapping("/eliminar")
     public String eliminarDireccion(@RequestParam("idEliminar") Long idEliminar) {
         direccionService.eliminarDireccion(idEliminar);
         return "redirect:/direcciones/";
+    }
+
+    //
+    @GetMapping("/ejecutar-cccc")
+    public String ejecutarCCCC(Model model) {
+        direccionService.ejecutarCCCC();
+
+        List<Direccion> resultados = direccionService.ejecutarCCCC();
+        model.addAttribute("resultados", resultados);
+
+        return "resultado-cccc";
     }
 
 }

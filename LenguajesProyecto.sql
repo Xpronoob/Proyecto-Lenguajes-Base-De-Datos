@@ -63,7 +63,8 @@ CREATE TABLE Pedidos
     id_empresa NUMBER,
     CONSTRAINT fk_pedidos_empresa FOREIGN KEY (id_empresa) REFERENCES Empresa(id_empresa)
 );
---------------------------------------------------------------------
+----==============CRUDS CON CSP================----
+----==========DIRECCION==========----
 ----CSP ADD Direccion
 CREATE SEQUENCE secuencia_direccion;
 CREATE OR REPLACE PROCEDURE agregar_direccion(
@@ -71,17 +72,16 @@ CREATE OR REPLACE PROCEDURE agregar_direccion(
 ) AS
     v_id_direccion direccion.id_direccion%TYPE;
 BEGIN
-    -- Generar el nuevo ID_DIRECCION automáticamente
+    -- id automatico
     SELECT secuencia_direccion.NEXTVAL INTO v_id_direccion FROM dual;
 
-    -- Insertar la nueva dirección en la tabla
     INSERT INTO direccion (id_direccion, referencias)
     VALUES (v_id_direccion, p_referencias);
 
     COMMIT;
 END;
 /
---INPUT/OUTPUT
+--INPUT/OUTPUT--
 DECLARE
     p_referencias direccion.referencias%TYPE;
 BEGIN
@@ -131,6 +131,325 @@ BEGIN
     COMMIT;
 END;
 /
+----==========Tipo Empresa==========----
+CREATE SEQUENCE secuencia_tipo_empresa;
+
+CREATE OR REPLACE PROCEDURE agregar_tipo_empresa(
+    p_tipo_empresa IN tipo_empresa.tipo_empresa%TYPE
+) AS
+    v_id_tipo_empresa tipo_empresa.id_tipo_empresa%TYPE;
+BEGIN
+    -- id automatico
+    SELECT secuencia_tipo_empresa.NEXTVAL INTO v_id_tipo_empresa FROM dual;
+
+    INSERT INTO tipo_empresa (id_tipo_empresa, tipo_empresa)
+    VALUES (v_id_tipo_empresa, p_tipo_empresa);
+
+    COMMIT;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE obtener_tipos_empresa(p_resultados OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_resultados FOR SELECT * FROM tipo_empresa;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE actualizar_tipo_empresa(
+    p_id_tipo_empresa IN tipo_empresa.id_tipo_empresa%TYPE,
+    p_tipo_empresa IN tipo_empresa.tipo_empresa%TYPE
+) AS
+BEGIN
+    UPDATE tipo_empresa
+    SET tipo_empresa = p_tipo_empresa
+    WHERE id_tipo_empresa = p_id_tipo_empresa;
+    COMMIT;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE eliminar_tipo_empresa(p_id_tipo_empresa IN tipo_empresa.id_tipo_empresa%TYPE) AS
+BEGIN
+    DELETE FROM tipo_empresa WHERE id_tipo_empresa = p_id_tipo_empresa;
+    COMMIT;
+END;
+/
+
+----==========Estado Unidad==========----
+CREATE SEQUENCE secuencia_estado_unidad;
+
+CREATE OR REPLACE PROCEDURE agregar_estado_unidad(
+    p_estado_unidad IN estado_unidad.estado_unidad%TYPE
+) AS
+    v_id_estado_unidad estado_unidad.id_estado_unidad%TYPE;
+BEGIN
+    -- id automatico
+    SELECT secuencia_estado_unidad.NEXTVAL INTO v_id_estado_unidad FROM dual;
+
+    INSERT INTO estado_unidad (id_estado_unidad, estado_unidad)
+    VALUES (v_id_estado_unidad, p_estado_unidad);
+
+    COMMIT;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE obtener_estados_unidad(p_resultados OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_resultados FOR SELECT * FROM estado_unidad;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE actualizar_estado_unidad(
+    p_id_estado_unidad IN estado_unidad.id_estado_unidad%TYPE,
+    p_estado_unidad IN estado_unidad.estado_unidad%TYPE
+) AS
+BEGIN
+    UPDATE estado_unidad
+    SET estado_unidad = p_estado_unidad
+    WHERE id_estado_unidad = p_id_estado_unidad;
+    COMMIT;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE eliminar_estado_unidad(p_id_estado_unidad IN estado_unidad.id_estado_unidad%TYPE) AS
+BEGIN
+    DELETE FROM estado_unidad WHERE id_estado_unidad = p_id_estado_unidad;
+    COMMIT;
+END;
+/
+----==========Empleado==========----
+CREATE SEQUENCE secuencia_empleado;
+
+CREATE OR REPLACE PROCEDURE agregar_empleado(
+    p_nombre_empleado IN empleado.nombre_empleado%TYPE,
+    p_apellido_empleado IN empleado.apellido_empleado%TYPE,
+    p_identificacion_empleado IN empleado.identificacion_empleado%TYPE,
+    p_id_direccion IN empleado.id_direccion%TYPE
+) AS
+    v_id_empleado empleado.id_empleado%TYPE;
+BEGIN
+    -- id automatico
+    SELECT secuencia_empleado.NEXTVAL INTO v_id_empleado FROM dual;
+
+    INSERT INTO empleado (id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+    VALUES (v_id_empleado, p_nombre_empleado, p_apellido_empleado, p_identificacion_empleado, p_id_direccion);
+
+    COMMIT;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE obtener_empleados(p_resultados OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_resultados FOR SELECT * FROM empleado;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE actualizar_empleado(
+    p_id_empleado IN empleado.id_empleado%TYPE,
+    p_nombre_empleado IN empleado.nombre_empleado%TYPE,
+    p_apellido_empleado IN empleado.apellido_empleado%TYPE,
+    p_identificacion_empleado IN empleado.identificacion_empleado%TYPE,
+    p_id_direccion IN empleado.id_direccion%TYPE
+) AS
+BEGIN
+    UPDATE empleado
+    SET nombre_empleado = p_nombre_empleado,
+        apellido_empleado = p_apellido_empleado,
+        identificacion_empleado = p_identificacion_empleado,
+        id_direccion = p_id_direccion
+    WHERE id_empleado = p_id_empleado;
+    COMMIT;
+END;
+/
+--------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE eliminar_empleado(p_id_empleado IN empleado.id_empleado%TYPE) AS
+BEGIN
+    DELETE FROM empleado WHERE id_empleado = p_id_empleado;
+    COMMIT;
+END;
+/
+----==========EMPRESA==========----
+-- CSP ADD Empresa
+CREATE SEQUENCE secuencia_empresa;
+CREATE OR REPLACE PROCEDURE agregar_empresa(
+    p_nombre_empresa IN empresa.nombre_empresa%TYPE,
+    p_identificacion IN empresa.identificacion%TYPE,
+    p_fecha_ingreso IN empresa.fecha_ingreso%TYPE,
+    p_fecha_registro IN empresa.fecha_registro%TYPE,
+    p_direccion IN empresa.direccion%TYPE,
+    p_observaciones IN empresa.observaciones%TYPE,
+    p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
+) AS
+    v_id_empresa empresa.id_empresa%TYPE;
+BEGIN
+    -- id automatico
+    SELECT secuencia_empresa.NEXTVAL INTO v_id_empresa FROM dual;
+
+    INSERT INTO empresa (id_empresa, nombre_empresa, identificacion, fecha_ingreso, fecha_registro, direccion, observaciones, id_tipo_empresa)
+    VALUES (v_id_empresa, p_nombre_empresa, p_identificacion, p_fecha_ingreso, p_fecha_registro, p_direccion, p_observaciones, p_id_tipo_empresa);
+
+    COMMIT;
+END;
+/
+
+-- CSP READ Empresa
+CREATE OR REPLACE PROCEDURE obtener_empresas(p_resultados OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_resultados FOR SELECT * FROM empresa;
+END;
+/
+
+-- CSP UPDATE Empresa
+CREATE OR REPLACE PROCEDURE actualizar_empresa(
+    p_id_empresa IN empresa.id_empresa%TYPE,
+    p_nombre_empresa IN empresa.nombre_empresa%TYPE,
+    p_identificacion IN empresa.identificacion%TYPE,
+    p_fecha_ingreso IN empresa.fecha_ingreso%TYPE,
+    p_fecha_registro IN empresa.fecha_registro%TYPE,
+    p_direccion IN empresa.direccion%TYPE,
+    p_observaciones IN empresa.observaciones%TYPE,
+    p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
+) AS
+BEGIN
+    UPDATE empresa
+    SET nombre_empresa = p_nombre_empresa,
+        identificacion = p_identificacion,
+        fecha_ingreso = p_fecha_ingreso,
+        fecha_registro = p_fecha_registro,
+        direccion = p_direccion,
+        observaciones = p_observaciones,
+        id_tipo_empresa = p_id_tipo_empresa
+    WHERE id_empresa = p_id_empresa;
+    
+    COMMIT;
+END;
+/
+
+-- CSP DELETE Empresa
+CREATE OR REPLACE PROCEDURE eliminar_empresa(p_id_empresa IN empresa.id_empresa%TYPE) AS
+BEGIN
+    DELETE FROM empresa WHERE id_empresa = p_id_empresa;
+    COMMIT;
+END;
+/
+
+
+----==========Unidad==========----
+-- CSP ADD Unidad
+CREATE SEQUENCE secuencia_unidad;
+CREATE OR REPLACE PROCEDURE agregar_unidad(
+    p_id_estado_unidad IN unidades.id_estado_unidad%TYPE,
+    p_id_empresa IN unidades.id_empresa%TYPE,
+    p_unidad_year IN unidades.unidad_year%TYPE,
+    p_capacidad_carga IN unidades.capacidad_carga%TYPE,
+    p_chasis IN unidades.chasis%TYPE,
+    p_descripcion IN unidades.descripcion%TYPE
+) AS
+    v_id_placa unidades.id_placa%TYPE;
+BEGIN
+    -- id automatico
+    SELECT secuencia_unidad.NEXTVAL INTO v_id_placa FROM dual;
+
+    INSERT INTO unidades (id_placa, id_estado_unidad, id_empresa, unidad_year, capacidad_carga, chasis, descripcion)
+    VALUES (v_id_placa, p_id_estado_unidad, p_id_empresa, p_unidad_year, p_capacidad_carga, p_chasis, p_descripcion);
+
+    COMMIT;
+END;
+/
+
+-- CSP READ Unidades
+CREATE OR REPLACE PROCEDURE obtener_unidades(p_resultados OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_resultados FOR SELECT * FROM unidades;
+END;
+/
+
+-- CSP UPDATE Unidad
+CREATE OR REPLACE PROCEDURE actualizar_unidad(
+    p_id_placa IN unidades.id_placa%TYPE,
+    p_id_estado_unidad IN unidades.id_estado_unidad%TYPE,
+    p_id_empresa IN unidades.id_empresa%TYPE,
+    p_unidad_year IN unidades.unidad_year%TYPE,
+    p_capacidad_carga IN unidades.capacidad_carga%TYPE,
+    p_chasis IN unidades.chasis%TYPE,
+    p_descripcion IN unidades.descripcion%TYPE
+) AS
+BEGIN
+    UPDATE unidades
+    SET id_estado_unidad = p_id_estado_unidad,
+        id_empresa = p_id_empresa,
+        unidad_year = p_unidad_year,
+        capacidad_carga = p_capacidad_carga,
+        chasis = p_chasis,
+        descripcion = p_descripcion
+    WHERE id_placa = p_id_placa;
+
+    COMMIT;
+END;
+/
+
+-- CSP DELETE Unidad
+CREATE OR REPLACE PROCEDURE eliminar_unidad(p_id_placa IN unidades.id_placa%TYPE) AS
+BEGIN
+    DELETE FROM unidades WHERE id_placa = p_id_placa;
+    COMMIT;
+END;
+/
+
+----==============VIEWS, CSP, FUNC & CURSOR================----
+--DIRECCION--
+----=======================================================----
+-- Crear la vista
+CREATE OR REPLACE VIEW vw_direccion_info AS
+SELECT id_direccion, referencias
+FROM Direccion;
+
+-- Crear la función
+CREATE OR REPLACE FUNCTION obtener_informacion(parametro IN VARCHAR2) RETURN VARCHAR2 IS
+    resultado_info VARCHAR2(100);
+BEGIN
+    -- Lógica de la función obtener_informacion
+    -- Asignar el resultado a la variable resultado_info
+    RETURN resultado_info;
+END;
+/
+
+-- Crear el procedimiento almacenado con función y cursor
+CREATE OR REPLACE PROCEDURE obtener_datos_direccion(p_resultados OUT SYS_REFCURSOR) AS
+    -- Declarar el cursor explícito
+    CURSOR c_datos_direccion IS
+        SELECT * FROM vw_direccion_info; -- Utilizar la vista vw_direccion_info en lugar de la tabla directamente
+    v_id_direccion Direccion.id_direccion%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
+    v_referencias Direccion.referencias%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
+    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la función obtener_informacion
+BEGIN
+    -- Abrir el cursor
+    OPEN c_datos_direccion;
+    
+    -- Recorrer el cursor y realizar operaciones
+    LOOP
+        -- Obtener los datos de la fila actual
+        FETCH c_datos_direccion INTO v_id_direccion, v_referencias;
+        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay más filas
+        
+        -- Lógica adicional y llamada a la función obtener_informacion
+        -- Utilizar los datos de la fila y llamar a la función obtener_informacion
+        v_informacion := obtener_informacion(v_referencias);
+        
+        -- Realizar otras operaciones o lógica
+        -- ...
+        
+        -- Imprimir los resultados o hacer lo que necesites con ellos
+        -- ...
+        
+    END LOOP;
+    
+    -- Cerrar el cursor
+    CLOSE c_datos_direccion;
+    
+    -- Asignar el cursor al parámetro de salida
+    OPEN p_resultados FOR SELECT * FROM DUAL;
+END;
+/
 
 
 
@@ -142,6 +461,17 @@ END;
 
 
 
+
+
+
+
+
+
+------------OLD---------------OLD------------------OLD-----------------------OLD
+select * from EMPLEADO;
+SELECT * FROM DIRECCION;
+SELECT * FROM EMPRESA;
+SELECT * FROM UNIDAD;
 
 CREATE OR REPLACE PROCEDURE agregar_estado_unidad(p_estado_unidad IN VARCHAR2) AS
 BEGIN

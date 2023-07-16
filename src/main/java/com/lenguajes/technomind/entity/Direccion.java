@@ -35,6 +35,19 @@ import jakarta.persistence.Table;
         }
 )
 
+//
+@NamedStoredProcedureQuery(
+        name = "obtener_datos_direccion",
+        procedureName = "obtener_datos_direccion",
+        parameters = {
+            @StoredProcedureParameter(
+                    name = "p_resultados",
+                    mode = ParameterMode.REF_CURSOR,
+                    type = void.class
+            )
+        }
+)
+
 @Table(name = "DIRECCION")
 @Entity
 public class Direccion {

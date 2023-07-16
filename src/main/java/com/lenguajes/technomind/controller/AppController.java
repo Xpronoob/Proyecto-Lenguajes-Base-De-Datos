@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AppController {
-    
+
     @GetMapping("/")
-    public String index(){
-    
+    public String index() {
+
         return "index.html";
     }
 }

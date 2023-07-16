@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>UNIDAD CRUD</title>
+    </head>
+    <body>
+        <h1>READ</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Placa</th>
+                    <th>Estado Unidad</th>
+                    <th>Empresa</th>
+                    <th>Año de la Unidad</th>
+                    <th>Capacidad de Carga</th>
+                    <th>Chasis</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="unidad : ${unidades}">
+                    <td th:text="${unidad.idPlaca}"></td>
+                    <td th:text="${unidad.estadoUnidad.getEstadoUnidad}"></td>
+                    <td th:text="${unidad.empresa.nombreEmpresa}"></td>
+                    <td th:text="${unidad.unidadYear}"></td>
+                    <td th:text="${unidad.capacidadCarga}"></td>
+                    <td th:text="${unidad.chasis}"></td>
+                    <td th:text="${unidad.descripcion}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <h1>CREATE</h1>
+        <form action="/unidades/agregar" method="post" th:object="${unidad}">
+            <label for="estadoUnidad">Estado Unidad:</label>
+            <input type="number" id="estadoUnidad" name="estadoUnidad.idEstadoUnidad" required><br>
+
+            <label for="empresa">Empresa:</label>
+            <input type="number" id="empresa" name="empresa.idEmpresa" required><br>
+
+            <label for="unidadYear">Año de la Unidad:</label>
+            <input type="text" id="unidadYear" name="unidadYear" required><br>
+
+            <label for="capacidadCarga">Capacidad de Carga:</label>
+            <input type="text" id="capacidadCarga" name="capacidadCarga" required><br>
+
+            <label for="chasis">Chasis:</label>
+            <input type="text" id="chasis" name="chasis" required><br>
+
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" required><br>
+
+            <button type="submit">Agregar Unidad</button>
+        </form>
+
+        <p>[[${mensaje}]]</p>
+
+        <h1>UPDATE</h1>
+        <form onsubmit="return redireccionar(event)">
+            <label for="idPlaca">ID:</label>
+            <input type="number" id="idPlaca" required><br>
+            <button type="submit">Ir a editar</button>
+        </form>
+
+        <script>
+            function redireccionar(event) {
+                event.preventDefault();
+                var idPlaca = document.getElementById("idPlaca").value;
+                window.location.href = "/unidades/" + idPlaca + "/editar";
+                return false;
+            }
+        </script>
+
+        <h1>DELETE</h1>
+        <form th:action="@{/unidades/eliminar}" method="post">
+            <label for="idEliminar">ID:</label>
+            <input type="number" id="idEliminar" name="idEliminar" required><br>
+            <button type="submit">Eliminar</button>
+        </form>
+
+    </body>
+</html>

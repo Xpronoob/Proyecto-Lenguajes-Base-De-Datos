@@ -1,6 +1,7 @@
 package com.lenguajes.technomind.repository;
 
 import com.lenguajes.technomind.entity.Direccion;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DireccionRepository extends JpaRepository<Direccion, Long> {
 
+    //CSP DE CRUDS
     @Procedure("agregar_direccion")
     void agregarDireccion(String referencias);
 
@@ -24,5 +26,9 @@ public interface DireccionRepository extends JpaRepository<Direccion, Long> {
 
     @Procedure(name = "eliminarDireccion")
     void eliminarDireccion(@Param("p_id_direccion") Long idDireccion);
+
+    //
+    @Procedure(name = "obtener_datos_direccion", outputParameterName = "p_resultados")
+    ArrayList<?> obtenerDatosDireccion();
 
 }

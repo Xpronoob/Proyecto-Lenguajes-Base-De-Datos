@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Resultado CCCC</title>
+    </head>
+    <body>
+        <h1>Resultado CCCC</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Referencias</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Itera sobre los resultados y muestra cada uno en una fila de la tabla -->
+                <tr th:each="resultado : ${resultados}">
+                    <td th:text="${resultado.idDireccion}"></td>
+                    <td th:text="${resultado.referencias}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

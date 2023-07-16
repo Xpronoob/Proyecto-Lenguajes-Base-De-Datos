@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>ESTADO UNIDAD CRUD</title>
+    </head>
+    <body>
+
+        <h1>READ</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Estado Unidad</th>
+                    <th>Estado Unidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estadoUnidad : ${estadosUnidad}">
+                    <td th:text="${estadoUnidad.idEstadoUnidad}"></td>
+                    <td th:text="${estadoUnidad.estadoUnidad}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h1>CREATE</h1>
+        <form action="/estado-unidades/agregar" method="post">
+            <label for="estadoUnidad">Estado Unidad:</label>
+            <input type="text" id="estadoUnidad" name="estadoUnidad" required>
+            <button type="submit">Agregar Estado Unidad</button>
+        </form>
+        <p>[[${mensaje}]]</p>
+
+        <h1>UPDATE</h1>
+        <form onsubmit="return redireccionar(event)">
+            <label for="numero">ID:</label>
+            <input type="number" id="numero" required>
+            <button type="submit">Ir a editar</button>
+        </form>
+
+        <script>
+            function redireccionar(event) {
+                event.preventDefault();
+                var numero = document.getElementById("numero").value;
+                window.location.href = "/estado-unidades/" + numero + "/editar";
+                return false;
+            }
+        </script>
+
+        <h1>DELETE</h1>
+        <form th:action="@{/estado-unidades/eliminar}" method="post">
+            <label for="idEliminar">ID:</label>
+            <input type="number" id="idEliminar" name="idEliminar" required>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+
+    </body>
+</html>
