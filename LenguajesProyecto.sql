@@ -94,7 +94,7 @@ BEGIN
     -- Confirmar los cambios
     COMMIT;
     
-    -- Mostrar mensaje de 閤ito
+    -- Mostrar mensaje de 茅xito
     DBMS_OUTPUT.PUT_LINE('Procedimiento almacenado ejecutado correctamente');
 EXCEPTION
     WHEN OTHERS THEN
@@ -403,24 +403,24 @@ CREATE OR REPLACE VIEW vw_direccion_info AS
 SELECT id_direccion, referencias
 FROM Direccion;
 
--- Crear la funci髇
+-- Crear la funci贸n
 CREATE OR REPLACE FUNCTION obtener_informacion(parametro IN VARCHAR2) RETURN VARCHAR2 IS
     resultado_info VARCHAR2(100);
 BEGIN
-    -- L骻ica de la funci髇 obtener_informacion
+    -- L贸gica de la funci贸n obtener_informacion
     -- Asignar el resultado a la variable resultado_info
     RETURN resultado_info;
 END;
 /
 
--- Crear el procedimiento almacenado con funci髇 y cursor
+-- Crear el procedimiento almacenado con funci贸n y cursor
 CREATE OR REPLACE PROCEDURE obtener_datos_direccion(p_resultados OUT SYS_REFCURSOR) AS
-    -- Declarar el cursor expl韈ito
+    -- Declarar el cursor expl铆cito
     CURSOR c_datos_direccion IS
         SELECT * FROM vw_direccion_info; -- Utilizar la vista vw_direccion_info en lugar de la tabla directamente
     v_id_direccion Direccion.id_direccion%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
     v_referencias Direccion.referencias%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
-    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la funci髇 obtener_informacion
+    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la funci贸n obtener_informacion
 BEGIN
     -- Abrir el cursor
     OPEN c_datos_direccion;
@@ -429,13 +429,13 @@ BEGIN
     LOOP
         -- Obtener los datos de la fila actual
         FETCH c_datos_direccion INTO v_id_direccion, v_referencias;
-        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay m醩 filas
+        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay m谩s filas
         
-        -- L骻ica adicional y llamada a la funci髇 obtener_informacion
-        -- Utilizar los datos de la fila y llamar a la funci髇 obtener_informacion
+        -- L贸gica adicional y llamada a la funci贸n obtener_informacion
+        -- Utilizar los datos de la fila y llamar a la funci贸n obtener_informacion
         v_informacion := obtener_informacion(v_referencias);
         
-        -- Realizar otras operaciones o l骻ica
+        -- Realizar otras operaciones o l贸gica
         -- ...
         
         -- Imprimir los resultados o hacer lo que necesites con ellos
@@ -446,24 +446,143 @@ BEGIN
     -- Cerrar el cursor
     CLOSE c_datos_direccion;
     
-    -- Asignar el cursor al par醡etro de salida
+    -- Asignar el cursor al par谩metro de salida
     OPEN p_resultados FOR SELECT * FROM DUAL;
 END;
 /
 
+--------------------------------------------------------------------------------------------------------------------------------------
+    --VISTAS DE LA BASE DE DATOS (10):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --VISTAS DE LA BASE DE DATOS (10):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --VISTAS DE LA BASE DE DATOS (10):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --VISTAS DE LA BASE DE DATOS (10):
+--------------------------------------------------------------------------------------------------------------------------------------
+
+    --EMPLEADOS:
+--Vista para ver todos los Empleados (Funciona parecido a Select * FROM)
+CREATE VIEW Imprimir_Empleados_Vista AS
+SELECT id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado
+FROM Empleado;
+SELECT * FROM Imprimir_Empleados_Vista;
+
+--Vista para ver la cantidad de registros de la Tabla Empleado:
+CREATE VIEW Contador_Empleados_Vista AS
+SELECT COUNT(*) AS total_empleados
+FROM Empleado;
+SELECT total_empleados FROM Contador_Empleados_Vista;
+
+--Vista para acceder a los registros de empleado y a la vez a direcci贸n.
+CREATE VIEW Empleados_Direccion_Vista AS
+SELECT e.id_empleado, e.nombre_empleado, e.apellido_empleado, e.identificacion_empleado, d.id_direccion, d.referencias
+FROM Empleado e
+JOIN Direccion d ON e.id_direccion = d.id_direccion;
+
+SELECT id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion, referencias
+FROM Empleados_Direccion_Vista;
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+--UNIDADES:
+--Vista para ver la cantidad de registros de la Tabla Unidades:
+CREATE VIEW Contador_Unidades_Vista AS
+SELECT * FROM Unidades;
+SELECT COUNT(*) AS contador_unidades FROM Contador_Unidades_Vista;
+
+--Vista para mostrar la Unidad pero tambi茅n, a la empresa que pertenece y su estado.
+CREATE VIEW Unidades_EstadoEmpresa_Vista AS
+SELECT u.id_placa, u.descripcion, u.id_empresa, u.id_estado_unidad, eu.estado_unidad
+FROM Unidades u
+JOIN Empresa e ON u.id_empresa = e.id_empresa
+JOIN Estado_Unidad eu ON u.id_estado_unidad = eu.id_estado_unidad;
+
+SELECT id_placa, descripcion, id_empresa, id_estado_unidad, estado_unidad
+FROM Unidades_EstadoEmpresa_Vista;
+
+--Vista que permita ver la unidad de mayor a menor capacidad de carga.
+CREATE VIEW Unidades_CapacidadCarga_Vista AS
+SELECT capacidad_carga
+FROM Unidades
+ORDER BY capacidad_carga DESC;
+
+SELECT capacidad_carga
+FROM Unidades_CapacidadCarga_Vista;
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--Empresa:
+--Vista CONTADOR para ver la cantidad de registros de la tabla Empresa:
+CREATE VIEW Contador_Empresa_Vista AS
+SELECT * FROM Empresa;
+
+SELECT COUNT(*) AS contador_empresa FROM Contador_Empresa_Vista;
+
+--Vista para acceder a los registros de empresa, pero tambi茅n a los registros de su tabla miscelanea.
+CREATE VIEW Empresa_TipoEmpresa_Vista AS
+SELECT e.id_empresa, e.nombre_empresa, e.fecha_ingreso, e.fecha_registro, e.observaciones, te.id_tipo_empresa, te.tipo_empresa
+FROM Empresa e
+JOIN Tipo_Empresa te ON e.id_tipo_empresa = te.id_tipo_empresa;
+
+SELECT id_empresa, nombre_empresa, fecha_ingreso, fecha_registro, observaciones, id_tipo_empresa, tipo_empresa
+FROM Empresa_TipoEmpresa_Vista;
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--Pedidos:
+--Vista para ver la cantidad de registros de la tabla Empresa:
+CREATE VIEW Contador_Pedidos_Vista AS
+SELECT * FROM Pedidos;
+
+SELECT COUNT(*) AS contador_pedidos FROM Contador_Pedidos_Vista;
+
+--Vista que para ver la fecha de ingreso m谩s reciente de los registros con id.
+--Adem谩s, la fecha en otra columna de la fecha limite.
+
+CREATE VIEW Pedidos_Fechas_Vista AS
+SELECT id_pedido, MAX(fecha_ingreso) AS fecha_ingreso_actual, limite_entrega AS Entrega_Limite
+FROM Pedidos
+GROUP BY id_pedido, limite_entrega;
+
+SELECT id_pedido, fecha_ingreso_actual, Entrega_Limite
+FROM Pedidos_Fechas_Vista;
+
+--BASE DE DATOS (VISTA GENERAL):
+CREATE VIEW BaseDeDatos_VistaGeneral AS
+SELECT 'Direccion' AS tabla, id_direccion AS id, referencias AS informacion FROM Direccion
+UNION ALL
+SELECT 'Tipo_Empresa' AS tabla, id_tipo_empresa AS id, tipo_empresa AS informacion FROM Tipo_Empresa
+UNION ALL
+SELECT 'Estado_Unidad' AS tabla, id_estado_unidad AS id, estado_unidad AS informacion FROM Estado_Unidad
+UNION ALL
+SELECT 'Empleado' AS tabla, id_empleado AS id, nombre_empleado || ' ' || apellido_empleado AS informacion FROM Empleado
+UNION ALL
+SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', Identificaci贸n: ' || identificacion AS informacion FROM Empresa
+UNION ALL
+SELECT 'Unidades' AS tabla, id_placa AS id, 'A帽o: ' || unidad_year || ', Capacidad de carga: ' || capacidad_carga AS informacion FROM Unidades
+UNION ALL
+SELECT 'Pedidos' AS tabla, id_pedido AS id, 'Cliente: ' || nombre_empresa_cliente || ', Fecha ingreso: ' || fecha_ingreso || ', Fecha l铆mite: ' || limite_entrega AS informacion FROM Pedidos;
+
+SELECT *
+FROM BaseDeDatos_VistaGeneral;
+
+--Renombrar Vistas
+RENAME Vista_Antigua TO Vista_Nueva;
+
+--Borrar vistas
+DROP VIEW NOMBRE_VISTA;
 
 
-
-
-
-
-
-
-
-
-
-
-
+--FINALIZAN LAS VISTAS
+--------------------------------------------------------------------------------------------------------------------------------------
+--FINALIZAN LAS VISTAS
+--------------------------------------------------------------------------------------------------------------------------------------
+--FINALIZAN LAS VISTAS
+--------------------------------------------------------------------------------------------------------------------------------------
+--FINALIZAN LAS VISTAS
+--------------------------------------------------------------------------------------------------------------------------------------
 
 
 
