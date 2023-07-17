@@ -754,7 +754,42 @@ END;
 
 --FINALIZA FUNCIONES
 --------------------------------------------------------------------------------------------------------------------------------------
---FUNCION CON CURSOR--------------------------------------------------------------------------------------------------------------------------------------
+--------------FUNCION CON CURSOR------------------------------------
+CREATE OR REPLACE PROCEDURE obtener_todos_los_empleados IS
+    CURSOR c_empleados IS
+        SELECT * FROM Empleado;
+    v_empleado Empleado%ROWTYPE;
+BEGIN
+    OPEN c_empleados;
+    LOOP
+        FETCH c_empleados INTO v_empleado;
+        EXIT WHEN c_empleados%NOTFOUND;
+        -- Realizar operaciones con los datos del empleado
+        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
+    END LOOP;
+    CLOSE c_empleados;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE obtener_empleados_por_identificacion(p_identificacion NUMBER) IS
+    CURSOR c_empleados_identificacion IS
+        SELECT * FROM Empleado WHERE identificacion_empleado > p_identificacion;
+    v_empleado Empleado%ROWTYPE;
+BEGIN
+    OPEN c_empleados_identificacion;
+    LOOP
+        FETCH c_empleados_identificacion INTO v_empleado;
+        EXIT WHEN c_empleados_identificacion%NOTFOUND;
+        -- Realizar operaciones con los datos del empleado
+        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
+    END LOOP;
+    CLOSE c_empleados_identificacion;
+END;
+/
+
+
+
+
 
     CREATE OR REPLACE FUNCTION ObtenerInformacionTablas RETURN SYS_REFCURSOR IS
   c_result SYS_REFCURSOR;
