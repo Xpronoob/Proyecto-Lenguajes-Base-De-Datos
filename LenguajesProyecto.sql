@@ -589,7 +589,172 @@ DROP VIEW NOMBRE_VISTA;
 
 --------------------------------------------------------------------------------------------------------------------------------------
     --FUNCIONES (15):
+
+    --INSERTAR DIRECCION
+    CREATE OR REPLACE FUNCTION insertar_direccion(p_referencias VARCHAR2) RETURN NUMBER IS
+    v_id_direccion NUMBER;
+BEGIN
+    INSERT INTO Direccion(referencias) VALUES (p_referencias)
+    RETURNING id_direccion INTO v_id_direccion;
+
+    RETURN v_id_direccion;
+END;
+/
+    
+--INSERTAR TIPO EMPRESA
+CREATE OR REPLACE FUNCTION insertar_tipo_empresa(p_tipo_empresa VARCHAR2) RETURN NUMBER IS
+    v_id_tipo_empresa NUMBER;
+BEGIN
+    INSERT INTO Tipo_Empresa(tipo_empresa) VALUES (p_tipo_empresa)
+    RETURNING id_tipo_empresa INTO v_id_tipo_empresa;
+
+    RETURN v_id_tipo_empresa;
+END;
+/
+    
+--INSERTAR ESTADO UNIDAD
+CREATE OR REPLACE FUNCTION insertar_estado_unidad(p_estado_unidad VARCHAR2) RETURN NUMBER IS
+    v_id_estado_unidad NUMBER;
+BEGIN
+    INSERT INTO Estado_Unidad(estado_unidad) VALUES (p_estado_unidad)
+    RETURNING id_estado_unidad INTO v_id_estado_unidad;
+
+    RETURN v_id_estado_unidad;
+END;
+/
+    
+--INSERTAR EMPLEADO
+CREATE OR REPLACE FUNCTION insertar_empleado(p_nombre_empleado VARCHAR2, p_apellido_empleado VARCHAR2, p_identificacion_empleado NUMBER, p_id_direccion NUMBER) RETURN NUMBER IS
+    v_id_empleado NUMBER;
+BEGIN
+    INSERT INTO Empleado(nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+    VALUES (p_nombre_empleado, p_apellido_empleado, p_identificacion_empleado, p_id_direccion)
+    RETURNING id_empleado INTO v_id_empleado;
+
+    RETURN v_id_empleado;
+END;
+/
+    
+--OBTENER DIRECCION POR ID
+CREATE OR REPLACE FUNCTION obtener_direccion_por_id(p_id_direccion NUMBER) RETURN Direccion%ROWTYPE IS
+    v_direccion Direccion%ROWTYPE;
+BEGIN
+    SELECT * INTO v_direccion FROM Direccion WHERE id_direccion = p_id_direccion;
+
+    RETURN v_direccion;
+END;
+/
+    
+--OBTENER TIPO EMPRESA POR ID
+CREATE OR REPLACE FUNCTION obtener_tipo_empresa_por_id(p_id_tipo_empresa NUMBER) RETURN Tipo_Empresa%ROWTYPE IS
+    v_tipo_empresa Tipo_Empresa%ROWTYPE;
+BEGIN
+    SELECT * INTO v_tipo_empresa FROM Tipo_Empresa WHERE id_tipo_empresa = p_id_tipo_empresa;
+
+    RETURN v_tipo_empresa;
+END;
+/
+    
+--OBTENER ESTADO UNIDAD POR ID
+CREATE OR REPLACE FUNCTION obtener_estado_unidad_por_id(p_id_estado_unidad NUMBER) RETURN Estado_Unidad%ROWTYPE IS
+    v_estado_unidad Estado_Unidad%ROWTYPE;
+BEGIN
+    SELECT * INTO v_estado_unidad FROM Estado_Unidad WHERE id_estado_unidad = p_id_estado_unidad;
+
+    RETURN v_estado_unidad;
+END;
+/
+    
+--OBTENER EMPLEADO POR ID
+CREATE OR REPLACE FUNCTION obtener_empleado_por_id(p_id_empleado NUMBER) RETURN Empleado%ROWTYPE IS
+    v_empleado Empleado%ROWTYPE;
+BEGIN
+    SELECT * INTO v_empleado FROM Empleado WHERE id_empleado = p_id_empleado;
+
+    RETURN v_empleado;
+END;
+/
+    
+--OBTENER EMPRESA POR ID
+CREATE OR REPLACE FUNCTION obtener_empresa_por_id(p_id_empresa NUMBER) RETURN Empresa%ROWTYPE IS
+    v_empresa Empresa%ROWTYPE;
+BEGIN
+    SELECT * INTO v_empresa FROM Empresa WHERE id_empresa = p_id_empresa;
+
+    RETURN v_empresa;
+END;
+/
+    
+--OBTENER PEDIDO POR ID
+CREATE OR REPLACE FUNCTION obtener_pedido_por_id(p_id_pedido NUMBER) RETURN Pedidos%ROWTYPE IS
+    v_pedido Pedidos%ROWTYPE;
+BEGIN
+    SELECT * INTO v_pedido FROM Pedidos WHERE id_pedido = p_id_pedido;
+
+    RETURN v_pedido;
+END;
+/
+    
+--ELIMINAR DIRECCION POR ID
+CREATE OR REPLACE FUNCTION eliminar_direccion_por_id(p_id_direccion NUMBER) RETURN BOOLEAN IS
+BEGIN
+    DELETE FROM Direccion WHERE id_direccion = p_id_direccion;
+
+    RETURN TRUE;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN FALSE;
+END;
+/
+    
+--ACTUALIZAR DIRECCION DE EMPLEADO
+CREATE OR REPLACE FUNCTION actualizar_direccion_empleado(p_id_empleado NUMBER, p_id_direccion NUMBER) RETURN BOOLEAN IS
+BEGIN
+    UPDATE Empleado SET id_direccion = p_id_direccion WHERE id_empleado = p_id_empleado;
+
+    RETURN TRUE;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN FALSE;
+END;
+/
+    
+--OBTENER PROMEDIO DE CAPACIDAD DE CARGA
+CREATE OR REPLACE FUNCTION obtener_promedio_capacidad_carga RETURN NUMBER IS
+    v_promedio_capacidad_carga NUMBER;
+BEGIN
+    SELECT AVG(capacidad_carga) INTO v_promedio_capacidad_carga FROM Unidades;
+
+    RETURN v_promedio_capacidad_carga;
+END;
+/
+    
+--ELIMINAR PEDIDO POR ID
+CREATE OR REPLACE FUNCTION eliminar_pedido_por_id(p_id_pedido NUMBER) RETURN BOOLEAN IS
+BEGIN
+    DELETE FROM Pedidos WHERE id_pedido = p_id_pedido;
+
+    RETURN TRUE;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN FALSE;
+END;
+/
+    
+--OBTENER NOMBRE COMPLETO DE EMPLEADO
+CREATE OR REPLACE FUNCTION obtener_nombre_completo_empleado(p_id_empleado NUMBER) RETURN VARCHAR2 IS
+    v_nombre_completo VARCHAR2(100);
+BEGIN
+    SELECT nombre_empleado || ' ' || apellido_empleado INTO v_nombre_completo FROM Empleado WHERE id_empleado = p_id_empleado;
+
+    RETURN v_nombre_completo;
+END;
+/
+
+
+--FINALIZA FUNCIONES
 --------------------------------------------------------------------------------------------------------------------------------------
+--FUNCION CON CURSOR--------------------------------------------------------------------------------------------------------------------------------------
 
     CREATE OR REPLACE FUNCTION ObtenerInformacionTablas RETURN SYS_REFCURSOR IS
   c_result SYS_REFCURSOR;
