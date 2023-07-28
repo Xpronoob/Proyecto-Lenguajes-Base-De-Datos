@@ -755,6 +755,7 @@ END;
 
 --FINALIZA FUNCIONES
 --------------------------------------------------------------------------------------------------------------------------------------
+--------------TRIGGERS------------------------------------
 CREATE OR REPLACE TRIGGER tr_direccion_insert
 AFTER INSERT ON Direccion
 FOR EACH ROW
@@ -769,35 +770,57 @@ INSERT INTO Direccion (referencias)
 VALUES ('Calle Principal #123, Ciudad');
 
 
-CREATE OR REPLACE TRIGGER tr_estado_unidad_delete
-BEFORE DELETE ON Estado_Unidad
+INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+VALUES ('Juan', 'Pérez', 123456789, 3);
+
+CREATE OR REPLACE TRIGGER tr_empleado_update_apellido
+BEFORE UPDATE OF apellido_empleado ON Empleado
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Estado de unidad eliminado. ID de estado de unidad: ' || :OLD.id_estado_unidad || ', Estado: ' || :OLD.estado_unidad);
+    DBMS_OUTPUT.PUT_LINE('Actualizando apellido del empleado. ID de empleado: ' || :OLD.id_empleado || ', Nuevo apellido: ' || :NEW.apellido_empleado);
 END;
 /
+-- Comando UPDATE para probar el trigger
+UPDATE Empleado
+SET apellido_empleado = 'Fernandez'
+WHERE id_empleado = 21;
 SET SERVEROUTPUT ON
+
+
+CREATE OR REPLACE TRIGGER tr_direccion_delete
+AFTER DELETE ON Direccion
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Dirección eliminada. ID de dirección: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
+END;
+/
+
+DELETE FROM Direccion
+WHERE id_direccion = 22;
+
+select * from direccion;
+CREATE OR REPLACE TRIGGER tr_empleado_update_nombre
+BEFORE UPDATE OF nombre_empleado ON Empleado
+FOR EACH ROW
+BEGIN
+    IF :OLD.nombre_empleado <> :NEW.nombre_empleado THEN
+        DBMS_OUTPUT.PUT_LINE('Nombre del empleado ' || :NEW.id_empleado || ' actualizado. Nuevo nombre: ' || :NEW.nombre_empleado);
+    END IF;
+END;
+/
+UPDATE Empleado SET nombre_empleado = 'Pedro' WHERE id_empleado = 21;
 
 
 CREATE OR REPLACE TRIGGER tr_empleado_insert
-AFTER INSERT ON Empleado
+BEFORE INSERT ON Empleado
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Nuevo empleado insertado. ID de empleado: ' || :NEW.id_empleado || ', Nombre: ' || :NEW.nombre_empleado || ', Apellido: ' || :NEW.apellido_empleado);
+    DBMS_OUTPUT.PUT_LINE('Nuevo empleado insertado. ID de empleado: ' || :NEW.id_empleado || ', Nombre: ' || :NEW.nombre_empleado);
 END;
 /
-SET SERVEROUTPUT ON
 
-
-
-CREATE OR REPLACE TRIGGER tr_unidades_update_descripcion
-AFTER UPDATE OF descripcion ON Unidades
-FOR EACH ROW
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Descripción de unidad actualizada. ID de placa: ' || :NEW.id_placa || ', Nueva Descripción: ' || :NEW.descripcion);
-END;
-/
-SET SERVEROUTPUT ON
+INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+VALUES ('Miguel', 'Murillo', 123456789, 23);
 --------------CURSORES------------------------------------
 CREATE OR REPLACE PROCEDURE obtener_todos_los_empleados IS
     CURSOR c_empleados IS
