@@ -579,19 +579,23 @@ DROP VIEW NOMBRE_VISTA;
 --FINALIZAN LAS VISTAS
 --------------------------------------------------------------------------------------------------------------------------------------
 --FINALIZAN LAS VISTAS
---------------------------------------------------------------------------------------------------------------------------------------
---FINALIZAN LAS VISTAS
---------------------------------------------------------------------------------------------------------------------------------------
---FINALIZAN LAS VISTAS
+---------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------
 
 
--
+
 
 --------------------------------------------------------------------------------------------------------------------------------------
-    --FUNCIONES (15):
+    --FUNCIONES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --FUNCIONES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --FUNCIONES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --FUNCIONES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
 
-    --INSERTAR DIRECCION
+--INSERTAR DIRECCION
     CREATE OR REPLACE FUNCTION insertar_direccion(p_referencias VARCHAR2) RETURN NUMBER IS
     v_id_direccion NUMBER;
 BEGIN
@@ -753,156 +757,6 @@ END;
 /
 
 
---FINALIZA FUNCIONES
---------------------------------------------------------------------------------------------------------------------------------------
---------------TRIGGERS------------------------------------
-CREATE OR REPLACE TRIGGER tr_direccion_insert
-AFTER INSERT ON Direccion
-FOR EACH ROW
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Nueva dirección insertada. ID de dirección: ' || :NEW.id_direccion || ', Referencias: ' || :NEW.referencias);
-END;
-/
-SET SERVEROUTPUT ON
-
--- Insertar una nueva dirección
-INSERT INTO Direccion (referencias)
-VALUES ('Calle Principal #123, Ciudad');
-
-
-INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
-VALUES ('Juan', 'Pérez', 123456789, 3);
-
-CREATE OR REPLACE TRIGGER tr_empleado_update_apellido
-BEFORE UPDATE OF apellido_empleado ON Empleado
-FOR EACH ROW
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Actualizando apellido del empleado. ID de empleado: ' || :OLD.id_empleado || ', Nuevo apellido: ' || :NEW.apellido_empleado);
-END;
-/
--- Comando UPDATE para probar el trigger
-UPDATE Empleado
-SET apellido_empleado = 'Fernandez'
-WHERE id_empleado = 21;
-SET SERVEROUTPUT ON
-
-
-CREATE OR REPLACE TRIGGER tr_direccion_delete
-AFTER DELETE ON Direccion
-FOR EACH ROW
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Dirección eliminada. ID de dirección: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
-END;
-/
-
-DELETE FROM Direccion
-WHERE id_direccion = 22;
-
-select * from direccion;
-CREATE OR REPLACE TRIGGER tr_empleado_update_nombre
-BEFORE UPDATE OF nombre_empleado ON Empleado
-FOR EACH ROW
-BEGIN
-    IF :OLD.nombre_empleado <> :NEW.nombre_empleado THEN
-        DBMS_OUTPUT.PUT_LINE('Nombre del empleado ' || :NEW.id_empleado || ' actualizado. Nuevo nombre: ' || :NEW.nombre_empleado);
-    END IF;
-END;
-/
-UPDATE Empleado SET nombre_empleado = 'Pedro' WHERE id_empleado = 21;
-
-
-CREATE OR REPLACE TRIGGER tr_empleado_insert
-BEFORE INSERT ON Empleado
-FOR EACH ROW
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Nuevo empleado insertado. ID de empleado: ' || :NEW.id_empleado || ', Nombre: ' || :NEW.nombre_empleado);
-END;
-/
-
-INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
-VALUES ('Miguel', 'Murillo', 123456789, 23);
---------------CURSORES------------------------------------
-CREATE OR REPLACE PROCEDURE obtener_todos_los_empleados IS
-    CURSOR c_empleados IS
-        SELECT * FROM Empleado;
-    v_empleado Empleado%ROWTYPE;
-BEGIN
-    OPEN c_empleados;
-    LOOP
-        FETCH c_empleados INTO v_empleado;
-        EXIT WHEN c_empleados%NOTFOUND;
-        -- Realizar operaciones con los datos del empleado
-        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
-    END LOOP;
-    CLOSE c_empleados;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE obtener_empleados_por_identificacion(p_identificacion NUMBER) IS
-    CURSOR c_empleados_identificacion IS
-        SELECT * FROM Empleado WHERE identificacion_empleado > p_identificacion;
-    v_empleado Empleado%ROWTYPE;
-BEGIN
-    OPEN c_empleados_identificacion;
-    LOOP
-        FETCH c_empleados_identificacion INTO v_empleado;
-        EXIT WHEN c_empleados_identificacion%NOTFOUND;
-        -- Realizar operaciones con los datos del empleado
-        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
-    END LOOP;
-    CLOSE c_empleados_identificacion;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE obtener_direcciones_por_referencias(p_referencias VARCHAR2) IS
-    CURSOR c_direcciones_referencias IS
-        SELECT * FROM Direccion WHERE referencias = p_referencias;
-    v_direccion Direccion%ROWTYPE;
-BEGIN
-    OPEN c_direcciones_referencias;
-    LOOP
-        FETCH c_direcciones_referencias INTO v_direccion;
-        EXIT WHEN c_direcciones_referencias%NOTFOUND;
-        -- Realizar operaciones con los datos de la dirección
-        DBMS_OUTPUT.PUT_LINE('ID Dirección: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
-    END LOOP;
-    CLOSE c_direcciones_referencias;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE obtener_tipos_empresa(p_tipo_empresa VARCHAR2) IS
-    CURSOR c_tipos_empresa IS
-        SELECT * FROM Tipo_Empresa WHERE tipo_empresa = p_tipo_empresa;
-    v_tipo_empresa Tipo_Empresa%ROWTYPE;
-BEGIN
-    OPEN c_tipos_empresa;
-    LOOP
-        FETCH c_tipos_empresa INTO v_tipo_empresa;
-        EXIT WHEN c_tipos_empresa%NOTFOUND;
-        -- Realizar operaciones con los datos del tipo de empresa
-        DBMS_OUTPUT.PUT_LINE('ID Tipo Empresa: ' || v_tipo_empresa.id_tipo_empresa || ', Tipo Empresa: ' || v_tipo_empresa.tipo_empresa);
-    END LOOP;
-    CLOSE c_tipos_empresa;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE obtener_estados_unidad(p_estado_unidad VARCHAR2) IS
-    CURSOR c_estados_unidad IS
-        SELECT * FROM Estado_Unidad WHERE estado_unidad = p_estado_unidad;
-    v_estado_unidad Estado_Unidad%ROWTYPE;
-BEGIN
-    OPEN c_estados_unidad;
-    LOOP
-        FETCH c_estados_unidad INTO v_estado_unidad;
-        EXIT WHEN c_estados_unidad%NOTFOUND;
-        -- Realizar operaciones con los datos del estado de la unidad
-        DBMS_OUTPUT.PUT_LINE('ID Estado Unidad: ' || v_estado_unidad.id_estado_unidad || ', Estado Unidad: ' || v_estado_unidad.estado_unidad);
-    END LOOP;
-    CLOSE c_estados_unidad;
-END;
-/
-
--------
 CREATE OR REPLACE FUNCTION obtener_todas_direcciones RETURN SYS_REFCURSOR IS
     c_direcciones SYS_REFCURSOR;
 BEGIN
@@ -1059,16 +913,214 @@ BEGIN
 END;
 /
 
-------------------------------
-    --FINALIZA FUNCIONES
-------------------------------
-    --FINALIZA FUNCIONES
-------------------------------
-    --FINALIZA FUNCIONES
+
+
+--FINALIZAN LAS FUNCIONES --FINALIZAN LAS FUNCIONES --FINALIZAN LAS FUNCIONES
+--------------------------------------------------------------------------------------------------------------------------------------
+--FINALIZAN LAS FUNCIONES --FINALIZAN LAS FUNCIONES --FINALIZAN LAS FUNCIONES
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+    --TRIGGERS DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --TRIGGERS DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --TRIGGERS DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --TRIGGERS DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER tr_direccion_insert
+AFTER INSERT ON Direccion
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Nueva dirección insertada. ID de dirección: ' || :NEW.id_direccion || ', Referencias: ' || :NEW.referencias);
+END;
+/
+SET SERVEROUTPUT ON
+
+-- Insertar una nueva dirección
+INSERT INTO Direccion (referencias)
+VALUES ('Calle Principal #123, Ciudad');
+
+
+INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+VALUES ('Juan', 'Pérez', 123456789, 3);
+
+CREATE OR REPLACE TRIGGER tr_empleado_update_apellido
+BEFORE UPDATE OF apellido_empleado ON Empleado
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Actualizando apellido del empleado. ID de empleado: ' || :OLD.id_empleado || ', Nuevo apellido: ' || :NEW.apellido_empleado);
+END;
+/
+-- Comando UPDATE para probar el trigger
+UPDATE Empleado
+SET apellido_empleado = 'Fernandez'
+WHERE id_empleado = 21;
+SET SERVEROUTPUT ON
+
+
+CREATE OR REPLACE TRIGGER tr_direccion_delete
+AFTER DELETE ON Direccion
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Dirección eliminada. ID de dirección: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
+END;
+/
+
+DELETE FROM Direccion
+WHERE id_direccion = 22;
+
+select * from direccion;
+CREATE OR REPLACE TRIGGER tr_empleado_update_nombre
+BEFORE UPDATE OF nombre_empleado ON Empleado
+FOR EACH ROW
+BEGIN
+    IF :OLD.nombre_empleado <> :NEW.nombre_empleado THEN
+        DBMS_OUTPUT.PUT_LINE('Nombre del empleado ' || :NEW.id_empleado || ' actualizado. Nuevo nombre: ' || :NEW.nombre_empleado);
+    END IF;
+END;
+/
+UPDATE Empleado SET nombre_empleado = 'Pedro' WHERE id_empleado = 21;
+
+
+CREATE OR REPLACE TRIGGER tr_empleado_insert
+BEFORE INSERT ON Empleado
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Nuevo empleado insertado. ID de empleado: ' || :NEW.id_empleado || ', Nombre: ' || :NEW.nombre_empleado);
+END;
+/
+
+INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+VALUES ('Miguel', 'Murillo', 123456789, 23);
+
+--FINALIZAN LOS TRIGGERS - TRIGGERS - TRIGGERS - TRIGGERS - TRIGGERS - TRIGGERS
+--------------------------------------------------------------------------------------------------------------------------------------
+--FINALIZAN LAS TRIGGERS - TRIGGERS - TRIGGERS - TRIGGERS - TRIGGERS - TRIGGERS
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+    --CURSORES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --CURSORES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --CURSORES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+    --CURSORES DE LA BASE DE DATOS (15):
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
     
+--------------CURSORES------------------------------------
+CREATE OR REPLACE PROCEDURE obtener_todos_los_empleados IS
+    CURSOR c_empleados IS
+        SELECT * FROM Empleado;
+    v_empleado Empleado%ROWTYPE;
+BEGIN
+    OPEN c_empleados;
+    LOOP
+        FETCH c_empleados INTO v_empleado;
+        EXIT WHEN c_empleados%NOTFOUND;
+        -- Realizar operaciones con los datos del empleado
+        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
+    END LOOP;
+    CLOSE c_empleados;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE obtener_empleados_por_identificacion(p_identificacion NUMBER) IS
+    CURSOR c_empleados_identificacion IS
+        SELECT * FROM Empleado WHERE identificacion_empleado > p_identificacion;
+    v_empleado Empleado%ROWTYPE;
+BEGIN
+    OPEN c_empleados_identificacion;
+    LOOP
+        FETCH c_empleados_identificacion INTO v_empleado;
+        EXIT WHEN c_empleados_identificacion%NOTFOUND;
+        -- Realizar operaciones con los datos del empleado
+        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
+    END LOOP;
+    CLOSE c_empleados_identificacion;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE obtener_direcciones_por_referencias(p_referencias VARCHAR2) IS
+    CURSOR c_direcciones_referencias IS
+        SELECT * FROM Direccion WHERE referencias = p_referencias;
+    v_direccion Direccion%ROWTYPE;
+BEGIN
+    OPEN c_direcciones_referencias;
+    LOOP
+        FETCH c_direcciones_referencias INTO v_direccion;
+        EXIT WHEN c_direcciones_referencias%NOTFOUND;
+        -- Realizar operaciones con los datos de la dirección
+        DBMS_OUTPUT.PUT_LINE('ID Dirección: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
+    END LOOP;
+    CLOSE c_direcciones_referencias;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE obtener_tipos_empresa(p_tipo_empresa VARCHAR2) IS
+    CURSOR c_tipos_empresa IS
+        SELECT * FROM Tipo_Empresa WHERE tipo_empresa = p_tipo_empresa;
+    v_tipo_empresa Tipo_Empresa%ROWTYPE;
+BEGIN
+    OPEN c_tipos_empresa;
+    LOOP
+        FETCH c_tipos_empresa INTO v_tipo_empresa;
+        EXIT WHEN c_tipos_empresa%NOTFOUND;
+        -- Realizar operaciones con los datos del tipo de empresa
+        DBMS_OUTPUT.PUT_LINE('ID Tipo Empresa: ' || v_tipo_empresa.id_tipo_empresa || ', Tipo Empresa: ' || v_tipo_empresa.tipo_empresa);
+    END LOOP;
+    CLOSE c_tipos_empresa;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE obtener_estados_unidad(p_estado_unidad VARCHAR2) IS
+    CURSOR c_estados_unidad IS
+        SELECT * FROM Estado_Unidad WHERE estado_unidad = p_estado_unidad;
+    v_estado_unidad Estado_Unidad%ROWTYPE;
+BEGIN
+    OPEN c_estados_unidad;
+    LOOP
+        FETCH c_estados_unidad INTO v_estado_unidad;
+        EXIT WHEN c_estados_unidad%NOTFOUND;
+        -- Realizar operaciones con los datos del estado de la unidad
+        DBMS_OUTPUT.PUT_LINE('ID Estado Unidad: ' || v_estado_unidad.id_estado_unidad || ', Estado Unidad: ' || v_estado_unidad.estado_unidad);
+    END LOOP;
+    CLOSE c_estados_unidad;
+END;
+/
+
+
+--FINALIZAN LOS CURSORES - CURSORES - CURSORES - CURSORES - CURSORES - CURSORES
+--------------------------------------------------------------------------------------------------------------------------------------
+--FINALIZAN LOS CURSORES - CURSORES - CURSORES - CURSORES - CURSORES - CURSORES
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
 
 
 
+
+
+
+
+
+
+
+
+
+--Código de pruebas: 
 ------------OLD---------------OLD------------------OLD-----------------------OLD
 select * from EMPLEADO;
 SELECT * FROM DIRECCION;
@@ -1092,4 +1144,3 @@ END;
 /
 
 select * from ESTADO_UNIDAD;
-
