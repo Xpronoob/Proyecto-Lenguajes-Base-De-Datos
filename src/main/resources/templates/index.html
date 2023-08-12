@@ -1,13 +1,96 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>Controlador de Base de Datos Oracle</div>
-        <a href="/">Inicio</a>
-        <a href="/direcciones/">Direcciones</a>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <title>TechnoMind - CRUDs Oracle</title>
+    <meta charset="UTF-8" />
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/webjars/font-awesome/css/all.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>   
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .container h2 a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .container h2 a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header th:fragment="header" class="header">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Welcome to TechnoMind</h1>
+                <p>Explore the power of CRUD operations with Oracle Database</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="https://cms.rootstack.com/sites/default/files/inline-images/oracle-logo-18%20%281%29_0.png" alt="TechnoMind Logo" width="200px" style="margin-top: 20px;">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <p>TechnoMind is a leading platform that empowers developers and businesses to harness the full potential of CRUD operations with Oracle Database. Our mission is to provide efficient and effective tools for managing and manipulating data, enabling you to create, read, update, and delete records seamlessly.</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <h2><a href="/direcciones/">Dirección</a></h2>
+            </div>
+            <div class="col-md-4">
+                <h2><a href="/empleados/">Empleado</a></h2>
+            </div>
+            <div class="col-md-4">
+                <h2><a href="/empresas/">Empresa</a></h2>
+            </div>
+            <div class="col-md-4">
+                <h2><a href="/estado-unidades/">Estado Unidad</a></h2>
+            </div>
+            <div class="col-md-4">
+                <h2><a href="resultado-cccc.html">Resultado</a></h2>
+            </div>
+            <div class="col-md-4">
+                <h2><a href="/tipo-empresas/">Tipo Empresa</a></h2>
+            </div>
+            <div class="col-md-4">
+                <h2><a href="/unidades/">Unidad</a></h2>
+            </div>
+        </div>
+    </div>
+    <footer th:fragment="footer" class="footer">
+        <div class="container">
+            <div class="col">
+                <p class="lead text-center">
+                    &copy; 2023 TechnoMind. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
 </html>

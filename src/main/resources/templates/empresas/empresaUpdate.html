@@ -1,35 +1,82 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>EMPRESA UPDATE</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <h1>UPDATE</h1>
-        <form th:action="@{/empresas/{id}/editar(id=${empresa.idEmpresa})}" method="post" >
-            <label for="nombreEmpresa">Nombre Empresa:</label>
-            <input type="text" id="nombreEmpresa" name="nombreEmpresa" th:value="${empresa.nombreEmpresa}" required><br>
-
-            <label for="identificacion">Identificación:</label>
-            <input type="text" id="identificacion" name="identificacion" th:value="${empresa.identificacion}" required><br>
-
-            <label for="fechaIngreso">Fecha Ingreso:</label>
-            <input type="date" id="fechaIngreso" name="fechaIngreso" th:value="${empresa.fechaIngreso}" required><br>
-
-            <label for="fechaRegistro">Fecha Registro:</label>
-            <input type="date" id="fechaRegistro" name="fechaRegistro" th:value="${empresa.fechaRegistro}" required><br>
-
-            <label for="direccion">Dirección:</label>
-            <input type="text" id="direccion" name="direccion" th:value="${empresa.direccion}" required><br>
-
-            <label for="observaciones">Observaciones:</label>
-            <input type="text" id="observaciones" name="observaciones" th:value="${empresa.observaciones}"><br>
-
-            <label for="idTipoEmpresa">ID Tipo Empresa:</label>
-            <input type="text" id="idTipoEmpresa" name="tipoEmpresa.idTipoEmpresa" th:value="${empresa.tipoEmpresa.idTipoEmpresa}" required><br>
-
-            <button type="submit">Guardar cambios</button>
+<head>
+    <title>Update Company</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Company</h1>
+        <form th:action="@{/empresas/{id}/editar(id=${empresa.idEmpresa})}" method="post">
+            <label for="nombreEmpresa">Company Name:</label>
+            <input type="text" id="nombreEmpresa" name="nombreEmpresa" th:value="${empresa.nombreEmpresa}" required>
+            
+            <label for="identificacion">Identification:</label>
+            <input type="text" id="identificacion" name="identificacion" th:value="${empresa.identificacion}" required>
+            
+            <label for="fechaIngreso">Joining Date:</label>
+            <input type="date" id="fechaIngreso" name="fechaIngreso" th:value="${empresa.fechaIngreso}" required>
+            
+            <label for="fechaRegistro">Registration Date:</label>
+            <input type="date" id="fechaRegistro" name="fechaRegistro" th:value="${empresa.fechaRegistro}" required>
+            
+            <label for="direccion">Address:</label>
+            <input type="text" id="direccion" name="direccion" th:value="${empresa.direccion}" required>
+            
+            <label for="observaciones">Observations:</label>
+            <input type="text" id="observaciones" name="observaciones" th:value="${empresa.observaciones}">
+            
+            <label for="idTipoEmpresa">Company Type ID:</label>
+            <input type="text" id="idTipoEmpresa" name="tipoEmpresa.idTipoEmpresa" th:value="${empresa.tipoEmpresa.idTipoEmpresa}" required>
+            
+            <button type="submit">Save Changes</button>
         </form>
-    </body>
+    </div>
+</body>
 </html>
