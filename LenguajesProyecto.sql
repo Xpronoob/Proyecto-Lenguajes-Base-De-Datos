@@ -95,7 +95,7 @@ BEGIN
     -- Confirmar los cambios
     COMMIT;
     
-    -- Mostrar mensaje de éxito
+    -- Mostrar mensaje de Ã©xito
     DBMS_OUTPUT.PUT_LINE('Procedimiento almacenado ejecutado correctamente');
 EXCEPTION
     WHEN OTHERS THEN
@@ -404,24 +404,24 @@ CREATE OR REPLACE VIEW vw_direccion_info AS
 SELECT id_direccion, referencias
 FROM Direccion;
 
--- Crear la función
+-- Crear la funciÃ³n
 CREATE OR REPLACE FUNCTION obtener_informacion(parametro IN VARCHAR2) RETURN VARCHAR2 IS
     resultado_info VARCHAR2(100);
 BEGIN
-    -- Lógica de la función obtener_informacion
+    -- LÃ³gica de la funciÃ³n obtener_informacion
     -- Asignar el resultado a la variable resultado_info
     RETURN resultado_info;
 END;
 /
 
--- Crear el procedimiento almacenado con función y cursor
+-- Crear el procedimiento almacenado con funciÃ³n y cursor
 CREATE OR REPLACE PROCEDURE obtener_datos_direccion(p_resultados OUT SYS_REFCURSOR) AS
-    -- Declarar el cursor explícito
+    -- Declarar el cursor explÃ­cito
     CURSOR c_datos_direccion IS
         SELECT * FROM vw_direccion_info; -- Utilizar la vista vw_direccion_info en lugar de la tabla directamente
     v_id_direccion Direccion.id_direccion%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
     v_referencias Direccion.referencias%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
-    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la función obtener_informacion
+    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la funciÃ³n obtener_informacion
 BEGIN
     -- Abrir el cursor
     OPEN c_datos_direccion;
@@ -430,13 +430,13 @@ BEGIN
     LOOP
         -- Obtener los datos de la fila actual
         FETCH c_datos_direccion INTO v_id_direccion, v_referencias;
-        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay más filas
+        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay mÃ¡s filas
         
-        -- Lógica adicional y llamada a la función obtener_informacion
-        -- Utilizar los datos de la fila y llamar a la función obtener_informacion
+        -- LÃ³gica adicional y llamada a la funciÃ³n obtener_informacion
+        -- Utilizar los datos de la fila y llamar a la funciÃ³n obtener_informacion
         v_informacion := obtener_informacion(v_referencias);
         
-        -- Realizar otras operaciones o lógica
+        -- Realizar otras operaciones o lÃ³gica
         -- ...
         
         -- Imprimir los resultados o hacer lo que necesites con ellos
@@ -447,7 +447,7 @@ BEGIN
     -- Cerrar el cursor
     CLOSE c_datos_direccion;
     
-    -- Asignar el cursor al parámetro de salida
+    -- Asignar el cursor al parÃ¡metro de salida
     OPEN p_resultados FOR SELECT * FROM DUAL;
 END;
 /
@@ -475,7 +475,7 @@ SELECT COUNT(*) AS total_empleados
 FROM Empleado;
 SELECT total_empleados FROM Contador_Empleados_Vista;
 
---Vista para acceder a los registros de empleado y a la vez a dirección.
+--Vista para acceder a los registros de empleado y a la vez a direcciÃ³n.
 CREATE VIEW Empleados_Direccion_Vista AS
 SELECT e.id_empleado, e.nombre_empleado, e.apellido_empleado, e.identificacion_empleado, d.id_direccion, d.referencias
 FROM Empleado e
@@ -493,7 +493,7 @@ CREATE VIEW Contador_Unidades_Vista AS
 SELECT * FROM Unidades;
 SELECT COUNT(*) AS contador_unidades FROM Contador_Unidades_Vista;
 
---Vista para mostrar la Unidad pero también, a la empresa que pertenece y su estado.
+--Vista para mostrar la Unidad pero tambiÃ©n, a la empresa que pertenece y su estado.
 CREATE VIEW Unidades_EstadoEmpresa_Vista AS
 SELECT u.id_placa, u.descripcion, u.id_empresa, u.id_estado_unidad, eu.estado_unidad
 FROM Unidades u
@@ -521,7 +521,7 @@ SELECT * FROM Empresa;
 
 SELECT COUNT(*) AS contador_empresa FROM Contador_Empresa_Vista;
 
---Vista para acceder a los registros de empresa, pero también a los registros de su tabla miscelanea.
+--Vista para acceder a los registros de empresa, pero tambiÃ©n a los registros de su tabla miscelanea.
 CREATE VIEW Empresa_TipoEmpresa_Vista AS
 SELECT e.id_empresa, e.nombre_empresa, e.fecha_ingreso, e.fecha_registro, e.observaciones, te.id_tipo_empresa, te.tipo_empresa
 FROM Empresa e
@@ -539,8 +539,8 @@ SELECT * FROM Pedidos;
 
 SELECT COUNT(*) AS contador_pedidos FROM Contador_Pedidos_Vista;
 
---Vista que para ver la fecha de ingreso más reciente de los registros con id.
---Además, la fecha en otra columna de la fecha limite.
+--Vista que para ver la fecha de ingreso mÃ¡s reciente de los registros con id.
+--AdemÃ¡s, la fecha en otra columna de la fecha limite.
 
 CREATE VIEW Pedidos_Fechas_Vista AS
 SELECT id_pedido, MAX(fecha_ingreso) AS fecha_ingreso_actual, limite_entrega AS Entrega_Limite
@@ -560,11 +560,11 @@ SELECT 'Estado_Unidad' AS tabla, id_estado_unidad AS id, estado_unidad AS inform
 UNION ALL
 SELECT 'Empleado' AS tabla, id_empleado AS id, nombre_empleado || ' ' || apellido_empleado AS informacion FROM Empleado
 UNION ALL
-SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', Identificación: ' || identificacion AS informacion FROM Empresa
+SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', IdentificaciÃ³n: ' || identificacion AS informacion FROM Empresa
 UNION ALL
-SELECT 'Unidades' AS tabla, id_placa AS id, 'Año: ' || unidad_year || ', Capacidad de carga: ' || capacidad_carga AS informacion FROM Unidades
+SELECT 'Unidades' AS tabla, id_placa AS id, 'AÃ±o: ' || unidad_year || ', Capacidad de carga: ' || capacidad_carga AS informacion FROM Unidades
 UNION ALL
-SELECT 'Pedidos' AS tabla, id_pedido AS id, 'Cliente: ' || nombre_empresa_cliente || ', Fecha ingreso: ' || fecha_ingreso || ', Fecha límite: ' || limite_entrega AS informacion FROM Pedidos;
+SELECT 'Pedidos' AS tabla, id_pedido AS id, 'Cliente: ' || nombre_empresa_cliente || ', Fecha ingreso: ' || fecha_ingreso || ', Fecha lÃ­mite: ' || limite_entrega AS informacion FROM Pedidos;
 
 SELECT *
 FROM BaseDeDatos_VistaGeneral;
@@ -882,11 +882,11 @@ BEGIN
     UNION ALL
     SELECT 'Empleado' AS tabla, id_empleado AS id, nombre_empleado || ' ' || apellido_empleado AS informacion FROM Empleado
     UNION ALL
-    SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', Identificación: ' || identificacion AS informacion FROM Empresa
+    SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', IdentificaciÃ³n: ' || identificacion AS informacion FROM Empresa
     UNION ALL
-    SELECT 'Unidades' AS tabla, id_placa AS id, CONCAT('Año: ', unidad_year, ', Capacidad de carga: ', capacidad_carga) AS informacion FROM Unidades
+    SELECT 'Unidades' AS tabla, id_placa AS id, CONCAT('AÃ±o: ', unidad_year, ', Capacidad de carga: ', capacidad_carga) AS informacion FROM Unidades
     UNION ALL
-    SELECT 'Pedidos' AS tabla, id_pedido AS id, CONCAT('Cliente: ', nombre_empresa_cliente, ', Fecha ingreso: ', fecha_ingreso, ', Fecha límite: ', limite_entrega) AS informacion FROM Pedidos;
+    SELECT 'Pedidos' AS tabla, id_pedido AS id, CONCAT('Cliente: ', nombre_empresa_cliente, ', Fecha ingreso: ', fecha_ingreso, ', Fecha lÃ­mite: ', limite_entrega) AS informacion FROM Pedidos;
 
   RETURN c_result;
 END;
@@ -905,8 +905,8 @@ BEGIN
     FETCH v_cursor INTO v_tabla, v_id, v_informacion;
     EXIT WHEN v_cursor%NOTFOUND;
     -- Realiza las operaciones necesarias con los datos obtenidos
-    -- Aquí puedes imprimir los valores, almacenarlos en variables, etc.
-    DBMS_OUTPUT.PUT_LINE('Tabla: ' || v_tabla || ', ID: ' || v_id || ', Información: ' || v_informacion);
+    -- AquÃ­ puedes imprimir los valores, almacenarlos en variables, etc.
+    DBMS_OUTPUT.PUT_LINE('Tabla: ' || v_tabla || ', ID: ' || v_id || ', InformaciÃ³n: ' || v_informacion);
   END LOOP;
 
   CLOSE v_cursor;
@@ -937,18 +937,18 @@ CREATE OR REPLACE TRIGGER tr_direccion_insert
 AFTER INSERT ON Direccion
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Nueva direcci�n insertada. ID de direcci�n: ' || :NEW.id_direccion || ', Referencias: ' || :NEW.referencias);
+    DBMS_OUTPUT.PUT_LINE('Nueva dirección insertada. ID de dirección: ' || :NEW.id_direccion || ', Referencias: ' || :NEW.referencias);
 END;
 /
 SET SERVEROUTPUT ON
 
--- Insertar una nueva direcci�n
+-- Insertar una nueva dirección
 INSERT INTO Direccion (referencias)
 VALUES ('Calle Principal #123, Ciudad');
 
 
 INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
-VALUES ('Juan', 'P�rez', 123456789, 3);
+VALUES ('Juan', 'Pérez', 123456789, 3);
 
 CREATE OR REPLACE TRIGGER tr_empleado_update_apellido
 BEFORE UPDATE OF apellido_empleado ON Empleado
@@ -968,7 +968,7 @@ CREATE OR REPLACE TRIGGER tr_direccion_delete
 AFTER DELETE ON Direccion
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Direcci�n eliminada. ID de direcci�n: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
+    DBMS_OUTPUT.PUT_LINE('Dirección eliminada. ID de dirección: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
 END;
 /
 
@@ -1063,8 +1063,8 @@ BEGIN
     LOOP
         FETCH c_direcciones_referencias INTO v_direccion;
         EXIT WHEN c_direcciones_referencias%NOTFOUND;
-        -- Realizar operaciones con los datos de la direcci�n
-        DBMS_OUTPUT.PUT_LINE('ID Direcci�n: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
+        -- Realizar operaciones con los datos de la dirección
+        DBMS_OUTPUT.PUT_LINE('ID Dirección: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
     END LOOP;
     CLOSE c_direcciones_referencias;
 END;
@@ -1120,7 +1120,7 @@ END;
 
 
 
---C�digo de pruebas: 
+--Código de pruebas: 
 ------------OLD---------------OLD------------------OLD-----------------------OLD
 select * from EMPLEADO;
 SELECT * FROM DIRECCION;
@@ -1144,3 +1144,546 @@ END;
 /
 
 select * from ESTADO_UNIDAD;
+
+
+-----------------------------
+---------------------PACKAGES
+-----------------------------
+---Paquete para la vista y funcion de Empleados
+CREATE OR REPLACE PACKAGE PAQUETE_BACKEND AS
+    -- Definición de la función en la especificación del paquete
+    FUNCTION obtener_empleados_sin_direccion
+    RETURN SYS_REFCURSOR;
+    
+END PAQUETE_BACKEND;
+/
+
+CREATE OR REPLACE PACKAGE BODY PAQUETE_BACKEND AS
+    -- Implementación de la función
+    FUNCTION obtener_empleados_sin_direccion
+    RETURN SYS_REFCURSOR AS
+        v_resultado SYS_REFCURSOR;
+    BEGIN
+        OPEN v_resultado FOR
+        SELECT id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado
+        FROM Empleado;
+
+        RETURN v_resultado;
+    END obtener_empleados_sin_direccion;
+    
+END PAQUETE_BACKEND;
+/
+
+----Paquete Procedure Direccion
+CREATE OR REPLACE PACKAGE PAQUETE_DIRECCION AS
+    -- Procedure para agregar una dirección
+    PROCEDURE agregar_direccion(
+        p_referencias IN direccion.referencias%TYPE
+    );
+    
+    -- Procedure para obtener todas las direcciones
+    PROCEDURE obtener_direcciones(
+        p_resultados OUT SYS_REFCURSOR
+    );
+    
+    -- Procedure para actualizar una dirección
+    PROCEDURE actualizar_direccion(
+        p_id_direccion IN direccion.id_direccion%TYPE,
+        p_referencias IN direccion.referencias%TYPE
+    );
+    
+    -- Procedure para eliminar una dirección
+    PROCEDURE eliminar_direccion(
+        p_id_direccion IN direccion.id_direccion%TYPE
+    );
+    
+END PAQUETE_DIRECCION;
+/
+----BODY
+CREATE OR REPLACE PACKAGE BODY PAQUETE_DIRECCION AS
+    -- Procedure para agregar una dirección
+    PROCEDURE agregar_direccion(
+        p_referencias IN direccion.referencias%TYPE
+    ) AS
+        v_id_direccion direccion.id_direccion%TYPE;
+    BEGIN
+        SELECT secuencia_direccion.NEXTVAL INTO v_id_direccion FROM dual;
+
+        INSERT INTO direccion (id_direccion, referencias)
+        VALUES (v_id_direccion, p_referencias);
+
+        COMMIT;
+    END agregar_direccion;
+    
+    -- Procedure para obtener todas las direcciones
+    PROCEDURE obtener_direcciones(
+        p_resultados OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM direccion;
+    END obtener_direcciones;
+    
+    -- Procedure para actualizar una dirección
+    PROCEDURE actualizar_direccion(
+        p_id_direccion IN direccion.id_direccion%TYPE,
+        p_referencias IN direccion.referencias%TYPE
+    ) AS
+    BEGIN
+        UPDATE direccion
+        SET referencias = p_referencias
+        WHERE id_direccion = p_id_direccion;
+        COMMIT;
+    END actualizar_direccion;
+    
+    -- Procedure para eliminar una dirección
+    PROCEDURE eliminar_direccion(
+        p_id_direccion IN direccion.id_direccion%TYPE
+    ) AS
+    BEGIN
+        DELETE FROM direccion WHERE id_direccion = p_id_direccion;
+        COMMIT;
+    END eliminar_direccion;
+    
+END PAQUETE_DIRECCION;
+/
+
+----Tipo Empresa
+CREATE OR REPLACE PACKAGE PAQUETE_TIPO_EMPRESA AS
+    -- Procedure para agregar un tipo de empresa
+    PROCEDURE agregar_tipo_empresa(
+        p_tipo_empresa IN tipo_empresa.tipo_empresa%TYPE
+    );
+    
+    -- Procedure para obtener todos los tipos de empresa
+    PROCEDURE obtener_tipos_empresa(
+        p_resultados OUT SYS_REFCURSOR
+    );
+    
+    -- Procedure para actualizar un tipo de empresa
+    PROCEDURE actualizar_tipo_empresa(
+        p_id_tipo_empresa IN tipo_empresa.id_tipo_empresa%TYPE,
+        p_tipo_empresa IN tipo_empresa.tipo_empresa%TYPE
+    );
+    
+    -- Procedure para eliminar un tipo de empresa
+    PROCEDURE eliminar_tipo_empresa(
+        p_id_tipo_empresa IN tipo_empresa.id_tipo_empresa%TYPE
+    );
+    
+END PAQUETE_TIPO_EMPRESA;
+/
+----Body
+CREATE OR REPLACE PACKAGE BODY PAQUETE_TIPO_EMPRESA AS
+    -- Procedure para agregar un tipo de empresa
+    PROCEDURE agregar_tipo_empresa(
+        p_tipo_empresa IN tipo_empresa.tipo_empresa%TYPE
+    ) AS
+        v_id_tipo_empresa tipo_empresa.id_tipo_empresa%TYPE;
+    BEGIN
+        SELECT secuencia_tipo_empresa.NEXTVAL INTO v_id_tipo_empresa FROM dual;
+
+        INSERT INTO tipo_empresa (id_tipo_empresa, tipo_empresa)
+        VALUES (v_id_tipo_empresa, p_tipo_empresa);
+
+        COMMIT;
+    END agregar_tipo_empresa;
+    
+    -- Procedure para obtener todos los tipos de empresa
+    PROCEDURE obtener_tipos_empresa(
+        p_resultados OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM tipo_empresa;
+    END obtener_tipos_empresa;
+    
+    -- Procedure para actualizar un tipo de empresa
+    PROCEDURE actualizar_tipo_empresa(
+        p_id_tipo_empresa IN tipo_empresa.id_tipo_empresa%TYPE,
+        p_tipo_empresa IN tipo_empresa.tipo_empresa%TYPE
+    ) AS
+    BEGIN
+        UPDATE tipo_empresa
+        SET tipo_empresa = p_tipo_empresa
+        WHERE id_tipo_empresa = p_id_tipo_empresa;
+        COMMIT;
+    END actualizar_tipo_empresa;
+    
+    -- Procedure para eliminar un tipo de empresa
+    PROCEDURE eliminar_tipo_empresa(
+        p_id_tipo_empresa IN tipo_empresa.id_tipo_empresa%TYPE
+    ) AS
+    BEGIN
+        DELETE FROM tipo_empresa WHERE id_tipo_empresa = p_id_tipo_empresa;
+        COMMIT;
+    END eliminar_tipo_empresa;
+    
+END PAQUETE_TIPO_EMPRESA;
+/
+
+----Estado Unidad
+CREATE OR REPLACE PACKAGE PAQUETE_ESTADO_UNIDAD AS
+    -- Procedure para agregar un estado de unidad
+    PROCEDURE agregar_estado_unidad(
+        p_estado_unidad IN estado_unidad.estado_unidad%TYPE
+    );
+    
+    -- Procedure para obtener todos los estados de unidad
+    PROCEDURE obtener_estados_unidad(
+        p_resultados OUT SYS_REFCURSOR
+    );
+    
+    -- Procedure para actualizar un estado de unidad
+    PROCEDURE actualizar_estado_unidad(
+        p_id_estado_unidad IN estado_unidad.id_estado_unidad%TYPE,
+        p_estado_unidad IN estado_unidad.estado_unidad%TYPE
+    );
+    
+    -- Procedure para eliminar un estado de unidad
+    PROCEDURE eliminar_estado_unidad(
+        p_id_estado_unidad IN estado_unidad.id_estado_unidad%TYPE
+    );
+    
+END PAQUETE_ESTADO_UNIDAD;
+/
+
+----Body
+CREATE OR REPLACE PACKAGE BODY PAQUETE_ESTADO_UNIDAD AS
+    -- Procedure para agregar un estado de unidad
+    PROCEDURE agregar_estado_unidad(
+        p_estado_unidad IN estado_unidad.estado_unidad%TYPE
+    ) AS
+        v_id_estado_unidad estado_unidad.id_estado_unidad%TYPE;
+    BEGIN
+        SELECT secuencia_estado_unidad.NEXTVAL INTO v_id_estado_unidad FROM dual;
+
+        INSERT INTO estado_unidad (id_estado_unidad, estado_unidad)
+        VALUES (v_id_estado_unidad, p_estado_unidad);
+
+        COMMIT;
+    END agregar_estado_unidad;
+    
+    -- Procedure para obtener todos los estados de unidad
+    PROCEDURE obtener_estados_unidad(
+        p_resultados OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM estado_unidad;
+    END obtener_estados_unidad;
+    
+    -- Procedure para actualizar un estado de unidad
+    PROCEDURE actualizar_estado_unidad(
+        p_id_estado_unidad IN estado_unidad.id_estado_unidad%TYPE,
+        p_estado_unidad IN estado_unidad.estado_unidad%TYPE
+    ) AS
+    BEGIN
+        UPDATE estado_unidad
+        SET estado_unidad = p_estado_unidad
+        WHERE id_estado_unidad = p_id_estado_unidad;
+        COMMIT;
+    END actualizar_estado_unidad;
+    
+    -- Procedure para eliminar un estado de unidad
+    PROCEDURE eliminar_estado_unidad(
+        p_id_estado_unidad IN estado_unidad.id_estado_unidad%TYPE
+    ) AS
+    BEGIN
+        DELETE FROM estado_unidad WHERE id_estado_unidad = p_id_estado_unidad;
+        COMMIT;
+    END eliminar_estado_unidad;
+    
+END PAQUETE_ESTADO_UNIDAD;
+/
+
+----Empleado
+CREATE OR REPLACE PACKAGE PAQUETE_EMPLEADO AS
+    -- Procedure para agregar un empleado
+    PROCEDURE agregar_empleado(
+        p_nombre_empleado IN empleado.nombre_empleado%TYPE,
+        p_apellido_empleado IN empleado.apellido_empleado%TYPE,
+        p_identificacion_empleado IN empleado.identificacion_empleado%TYPE,
+        p_id_direccion IN empleado.id_direccion%TYPE
+    );
+    
+    -- Procedure para obtener todos los empleados
+    PROCEDURE obtener_empleados(
+        p_resultados OUT SYS_REFCURSOR
+    );
+    
+    -- Procedure para actualizar un empleado
+    PROCEDURE actualizar_empleado(
+        p_id_empleado IN empleado.id_empleado%TYPE,
+        p_nombre_empleado IN empleado.nombre_empleado%TYPE,
+        p_apellido_empleado IN empleado.apellido_empleado%TYPE,
+        p_identificacion_empleado IN empleado.identificacion_empleado%TYPE,
+        p_id_direccion IN empleado.id_direccion%TYPE
+    );
+    
+    -- Procedure para eliminar un empleado
+    PROCEDURE eliminar_empleado(
+        p_id_empleado IN empleado.id_empleado%TYPE
+    );
+    
+END PAQUETE_EMPLEADO;
+/
+
+----Body
+CREATE OR REPLACE PACKAGE BODY PAQUETE_EMPLEADO AS
+    -- Procedure para agregar un empleado
+    PROCEDURE agregar_empleado(
+        p_nombre_empleado IN empleado.nombre_empleado%TYPE,
+        p_apellido_empleado IN empleado.apellido_empleado%TYPE,
+        p_identificacion_empleado IN empleado.identificacion_empleado%TYPE,
+        p_id_direccion IN empleado.id_direccion%TYPE
+    ) AS
+        v_id_empleado empleado.id_empleado%TYPE;
+    BEGIN
+        SELECT secuencia_empleado.NEXTVAL INTO v_id_empleado FROM dual;
+
+        INSERT INTO empleado (id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
+        VALUES (v_id_empleado, p_nombre_empleado, p_apellido_empleado, p_identificacion_empleado, p_id_direccion);
+
+        COMMIT;
+    END agregar_empleado;
+    
+    -- Procedure para obtener todos los empleados
+    PROCEDURE obtener_empleados(
+        p_resultados OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM empleado;
+    END obtener_empleados;
+    
+    -- Procedure para actualizar un empleado
+    PROCEDURE actualizar_empleado(
+        p_id_empleado IN empleado.id_empleado%TYPE,
+        p_nombre_empleado IN empleado.nombre_empleado%TYPE,
+        p_apellido_empleado IN empleado.apellido_empleado%TYPE,
+        p_identificacion_empleado IN empleado.identificacion_empleado%TYPE,
+        p_id_direccion IN empleado.id_direccion%TYPE
+    ) AS
+    BEGIN
+        UPDATE empleado
+        SET nombre_empleado = p_nombre_empleado,
+            apellido_empleado = p_apellido_empleado,
+            identificacion_empleado = p_identificacion_empleado,
+            id_direccion = p_id_direccion
+        WHERE id_empleado = p_id_empleado;
+        COMMIT;
+    END actualizar_empleado;
+    
+    -- Procedure para eliminar un empleado
+    PROCEDURE eliminar_empleado(
+        p_id_empleado IN empleado.id_empleado%TYPE
+    ) AS
+    BEGIN
+        DELETE FROM empleado WHERE id_empleado = p_id_empleado;
+        COMMIT;
+    END eliminar_empleado;
+    
+END PAQUETE_EMPLEADO;
+/
+
+----Empresa
+CREATE OR REPLACE PACKAGE PAQUETE_EMPRESA AS
+    -- Procedure para agregar una empresa
+    PROCEDURE agregar_empresa(
+        p_nombre_empresa IN empresa.nombre_empresa%TYPE,
+        p_identificacion IN empresa.identificacion%TYPE,
+        p_fecha_ingreso IN empresa.fecha_ingreso%TYPE,
+        p_fecha_registro IN empresa.fecha_registro%TYPE,
+        p_direccion IN empresa.direccion%TYPE,
+        p_observaciones IN empresa.observaciones%TYPE,
+        p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
+    );
+    
+    -- Procedure para obtener todas las empresas
+    PROCEDURE obtener_empresas(
+        p_resultados OUT SYS_REFCURSOR
+    );
+    
+    -- Procedure para actualizar una empresa
+    PROCEDURE actualizar_empresa(
+        p_id_empresa IN empresa.id_empresa%TYPE,
+        p_nombre_empresa IN empresa.nombre_empresa%TYPE,
+        p_identificacion IN empresa.identificacion%TYPE,
+        p_fecha_ingreso IN empresa.fecha_ingreso%TYPE,
+        p_fecha_registro IN empresa.fecha_registro%TYPE,
+        p_direccion IN empresa.direccion%TYPE,
+        p_observaciones IN empresa.observaciones%TYPE,
+        p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
+    );
+    
+    -- Procedure para eliminar una empresa
+    PROCEDURE eliminar_empresa(
+        p_id_empresa IN empresa.id_empresa%TYPE
+    );
+    
+END PAQUETE_EMPRESA;
+/
+
+----Body
+CREATE OR REPLACE PACKAGE BODY PAQUETE_EMPRESA AS
+    -- Procedure para agregar una empresa
+    PROCEDURE agregar_empresa(
+        p_nombre_empresa IN empresa.nombre_empresa%TYPE,
+        p_identificacion IN empresa.identificacion%TYPE,
+        p_fecha_ingreso IN empresa.fecha_ingreso%TYPE,
+        p_fecha_registro IN empresa.fecha_registro%TYPE,
+        p_direccion IN empresa.direccion%TYPE,
+        p_observaciones IN empresa.observaciones%TYPE,
+        p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
+    ) AS
+        v_id_empresa empresa.id_empresa%TYPE;
+    BEGIN
+        SELECT secuencia_empresa.NEXTVAL INTO v_id_empresa FROM dual;
+
+        INSERT INTO empresa (id_empresa, nombre_empresa, identificacion, fecha_ingreso, fecha_registro, direccion, observaciones, id_tipo_empresa)
+        VALUES (v_id_empresa, p_nombre_empresa, p_identificacion, p_fecha_ingreso, p_fecha_registro, p_direccion, p_observaciones, p_id_tipo_empresa);
+
+        COMMIT;
+    END agregar_empresa;
+    
+    -- Procedure para obtener todas las empresas
+    PROCEDURE obtener_empresas(
+        p_resultados OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM empresa;
+    END obtener_empresas;
+    
+    -- Procedure para actualizar una empresa
+    PROCEDURE actualizar_empresa(
+        p_id_empresa IN empresa.id_empresa%TYPE,
+        p_nombre_empresa IN empresa.nombre_empresa%TYPE,
+        p_identificacion IN empresa.identificacion%TYPE,
+        p_fecha_ingreso IN empresa.fecha_ingreso%TYPE,
+        p_fecha_registro IN empresa.fecha_registro%TYPE,
+        p_direccion IN empresa.direccion%TYPE,
+        p_observaciones IN empresa.observaciones%TYPE,
+        p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
+    ) AS
+    BEGIN
+        UPDATE empresa
+        SET nombre_empresa = p_nombre_empresa,
+            identificacion = p_identificacion,
+            fecha_ingreso = p_fecha_ingreso,
+            fecha_registro = p_fecha_registro,
+            direccion = p_direccion,
+            observaciones = p_observaciones,
+            id_tipo_empresa = p_id_tipo_empresa
+        WHERE id_empresa = p_id_empresa;
+        
+        COMMIT;
+    END actualizar_empresa;
+    
+    -- Procedure para eliminar una empresa
+    PROCEDURE eliminar_empresa(
+        p_id_empresa IN empresa.id_empresa%TYPE
+    ) AS
+    BEGIN
+        DELETE FROM empresa WHERE id_empresa = p_id_empresa;
+        COMMIT;
+    END eliminar_empresa;
+    
+END PAQUETE_EMPRESA;
+/
+
+----Unidad
+CREATE OR REPLACE PACKAGE PAQUETE_UNIDAD AS
+    -- Procedure para agregar una unidad
+    PROCEDURE agregar_unidad(
+        p_id_estado_unidad IN unidades.id_estado_unidad%TYPE,
+        p_id_empresa IN unidades.id_empresa%TYPE,
+        p_unidad_year IN unidades.unidad_year%TYPE,
+        p_capacidad_carga IN unidades.capacidad_carga%TYPE,
+        p_chasis IN unidades.chasis%TYPE,
+        p_descripcion IN unidades.descripcion%TYPE
+    );
+    
+    -- Procedure para obtener todas las unidades
+    PROCEDURE obtener_unidades(
+        p_resultados OUT SYS_REFCURSOR
+    );
+    
+    -- Procedure para actualizar una unidad
+    PROCEDURE actualizar_unidad(
+        p_id_placa IN unidades.id_placa%TYPE,
+        p_id_estado_unidad IN unidades.id_estado_unidad%TYPE,
+        p_id_empresa IN unidades.id_empresa%TYPE,
+        p_unidad_year IN unidades.unidad_year%TYPE,
+        p_capacidad_carga IN unidades.capacidad_carga%TYPE,
+        p_chasis IN unidades.chasis%TYPE,
+        p_descripcion IN unidades.descripcion%TYPE
+    );
+    
+    -- Procedure para eliminar una unidad
+    PROCEDURE eliminar_unidad(
+        p_id_placa IN unidades.id_placa%TYPE
+    );
+    
+END PAQUETE_UNIDAD;
+/
+
+----Body
+CREATE OR REPLACE PACKAGE BODY PAQUETE_UNIDAD AS
+    -- Procedure para agregar una unidad
+    PROCEDURE agregar_unidad(
+        p_id_estado_unidad IN unidades.id_estado_unidad%TYPE,
+        p_id_empresa IN unidades.id_empresa%TYPE,
+        p_unidad_year IN unidades.unidad_year%TYPE,
+        p_capacidad_carga IN unidades.capacidad_carga%TYPE,
+        p_chasis IN unidades.chasis%TYPE,
+        p_descripcion IN unidades.descripcion%TYPE
+    ) AS
+        v_id_placa unidades.id_placa%TYPE;
+    BEGIN
+        SELECT secuencia_unidad.NEXTVAL INTO v_id_placa FROM dual;
+
+        INSERT INTO unidades (id_placa, id_estado_unidad, id_empresa, unidad_year, capacidad_carga, chasis, descripcion)
+        VALUES (v_id_placa, p_id_estado_unidad, p_id_empresa, p_unidad_year, p_capacidad_carga, p_chasis, p_descripcion);
+
+        COMMIT;
+    END agregar_unidad;
+    
+    -- Procedure para obtener todas las unidades
+    PROCEDURE obtener_unidades(
+        p_resultados OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM unidades;
+    END obtener_unidades;
+    
+    -- Procedure para actualizar una unidad
+    PROCEDURE actualizar_unidad(
+        p_id_placa IN unidades.id_placa%TYPE,
+        p_id_estado_unidad IN unidades.id_estado_unidad%TYPE,
+        p_id_empresa IN unidades.id_empresa%TYPE,
+        p_unidad_year IN unidades.unidad_year%TYPE,
+        p_capacidad_carga IN unidades.capacidad_carga%TYPE,
+        p_chasis IN unidades.chasis%TYPE,
+        p_descripcion IN unidades.descripcion%TYPE
+    ) AS
+    BEGIN
+        UPDATE unidades
+        SET id_estado_unidad = p_id_estado_unidad,
+            id_empresa = p_id_empresa,
+            unidad_year = p_unidad_year,
+            capacidad_carga = p_capacidad_carga,
+            chasis = p_chasis,
+            descripcion = p_descripcion
+        WHERE id_placa = p_id_placa;
+
+        COMMIT;
+    END actualizar_unidad;
+    
+    -- Procedure para eliminar una unidad
+    PROCEDURE eliminar_unidad(
+        p_id_placa IN unidades.id_placa%TYPE
+    ) AS
+    BEGIN
+        DELETE FROM unidades WHERE id_placa = p_id_placa;
+        COMMIT;
+    END eliminar_unidad;
+    
+END PAQUETE_UNIDAD;
+/
