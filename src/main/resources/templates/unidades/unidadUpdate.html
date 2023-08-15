@@ -1,33 +1,96 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Editar Unidad</title>
-</head>
-<body>
-<h1>Editar Unidad</h1>
-<form action="/unidades/{idPlaca}/editar" method="post" th:object="${unidad}" th:action="@{/unidades/{idPlaca}/editar(idPlaca=${unidad.idPlaca})}">
+    <head>
+        <title>Editar Unidad</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+            }
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #ffffff;
+                border: 1px solid #e0e0e0;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+            }
+            form {
+                margin-top: 20px;
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            input[type="text"], input[type="number"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+            button {
+                background-color: #007bff;
+                color: #ffffff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Editar Unidad</h1>
+            <form action="/unidades/{idPlaca}/editar" method="post" th:object="${unidad}" th:action="@{/unidades/{idPlaca}/editar(idPlaca=${unidad.idPlaca})}">
 
-    <input type="hidden" id="idPlaca" name="idPlaca" th:value="${unidad.idPlaca}" />
 
-    <label for="estadoUnidad">Estado Unidad:</label>
-    <input type="number" id="estadoUnidad" name="estadoUnidad.idEstadoUnidad" th:value="${unidad.estadoUnidad.idEstadoUnidad}" required><br>
 
-    <label for="empresa">Empresa:</label>
-    <input type="number" id="empresa" name="empresa.idEmpresa" th:value="${unidad.empresa.idEmpresa}" required><br>
+                <input type="hidden" id="idPlaca" name="idPlaca" th:value="${unidad.idPlaca}" />
 
-    <label for="unidadYear">Año de la Unidad:</label>
-    <input type="text" id="unidadYear" name="unidadYear" th:value="${unidad.unidadYear}" required><br>
 
-    <label for="capacidadCarga">Capacidad de Carga:</label>
-    <input type="text" id="capacidadCarga" name="capacidadCarga" th:value="${unidad.capacidadCarga}" required><br>
 
-    <label for="chasis">Chasis:</label>
-    <input type="text" id="chasis" name="chasis" th:value="${unidad.chasis}" required><br>
+                <label for="estadoUnidad">Estado Unidad:</label>
+                <input type="number" id="estadoUnidad" name="estadoUnidad.idEstadoUnidad" th:value="${unidad.estadoUnidad.idEstadoUnidad}" required><br>
 
-    <label for="descripcion">Descripción:</label>
-    <input type="text" id="descripcion" name="descripcion" th:value="${unidad.descripcion}" required><br>
 
-    <button type="submit">Guardar Cambios</button>
-</form>
-</body>
+
+                <label for="empresa">Empresa:</label>
+                <input type="number" id="empresa" name="empresa.idEmpresa" th:value="${unidad.empresa.idEmpresa}" required><br>
+
+
+
+                <label for="unidadYear">Año de la Unidad:</label>
+                <input type="text" id="unidadYear" name="unidadYear" th:value="${unidad.unidadYear}" required><br>
+
+
+
+                <label for="capacidadCarga">Capacidad de Carga:</label>
+                <input type="text" id="capacidadCarga" name="capacidadCarga" th:value="${unidad.capacidadCarga}" required><br>
+
+
+
+                <label for="chasis">Chasis:</label>
+                <input type="text" id="chasis" name="chasis" th:value="${unidad.chasis}" required><br>
+
+
+
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion" th:value="${unidad.descripcion}" required><br>
+
+
+
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </body>
 </html>
