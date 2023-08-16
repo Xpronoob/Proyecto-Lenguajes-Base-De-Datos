@@ -118,20 +118,34 @@ CREATE OR REPLACE PROCEDURE ACTUALIZAR_DIRECCION(
     p_referencias IN direccion.referencias%TYPE
 ) AS
 BEGIN
-    UPDATE direccion
-    SET referencias = p_referencias
-    WHERE id_direccion = p_id_direccion;
-    COMMIT;
+    BEGIN
+        UPDATE direccion
+        SET referencias = p_referencias
+        WHERE id_direccion = p_id_direccion;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al actualizar la dirección.');
+    END;
 END;
 /
 --------------------------------------------------------------------
 ----CSP DELETE Direccion
 CREATE OR REPLACE PROCEDURE ELIMINAR_DIRECCION(p_id_direccion IN direccion.id_direccion%TYPE) AS
 BEGIN
-    DELETE FROM direccion WHERE id_direccion = p_id_direccion;
-    COMMIT;
+    BEGIN
+        DELETE FROM direccion WHERE id_direccion = p_id_direccion;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al eliminar la dirección.');
+    END;
 END;
 /
+
 ----==========Tipo Empresa==========----
 CREATE SEQUENCE secuencia_tipo_empresa;
 
@@ -230,10 +244,8 @@ CREATE OR REPLACE PROCEDURE agregar_empleado(
 BEGIN
     -- id automatico
     SELECT secuencia_empleado.NEXTVAL INTO v_id_empleado FROM dual;
-
     INSERT INTO empleado (id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
     VALUES (v_id_empleado, p_nombre_empleado, p_apellido_empleado, p_identificacion_empleado, p_id_direccion);
-
     COMMIT;
 END;
 /
@@ -252,13 +264,19 @@ CREATE OR REPLACE PROCEDURE actualizar_empleado(
     p_id_direccion IN empleado.id_direccion%TYPE
 ) AS
 BEGIN
-    UPDATE empleado
-    SET nombre_empleado = p_nombre_empleado,
-        apellido_empleado = p_apellido_empleado,
-        identificacion_empleado = p_identificacion_empleado,
-        id_direccion = p_id_direccion
-    WHERE id_empleado = p_id_empleado;
-    COMMIT;
+    BEGIN
+        UPDATE empleado
+        SET nombre_empleado = p_nombre_empleado,
+            apellido_empleado = p_apellido_empleado,
+            identificacion_empleado = p_identificacion_empleado,
+            id_direccion = p_id_direccion
+        WHERE id_empleado = p_id_empleado;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al actualizar el empleado.');
+    END;
 END;
 /
 --------------------------------------------------------------------
@@ -282,22 +300,34 @@ CREATE OR REPLACE PROCEDURE agregar_empresa(
 ) AS
     v_id_empresa empresa.id_empresa%TYPE;
 BEGIN
-    -- id automatico
-    SELECT secuencia_empresa.NEXTVAL INTO v_id_empresa FROM dual;
+    BEGIN
+        -- id automático
+        SELECT secuencia_empresa.NEXTVAL INTO v_id_empresa FROM dual;
 
-    INSERT INTO empresa (id_empresa, nombre_empresa, identificacion, fecha_ingreso, fecha_registro, direccion, observaciones, id_tipo_empresa)
-    VALUES (v_id_empresa, p_nombre_empresa, p_identificacion, p_fecha_ingreso, p_fecha_registro, p_direccion, p_observaciones, p_id_tipo_empresa);
+        INSERT INTO empresa (id_empresa, nombre_empresa, identificacion, fecha_ingreso, fecha_registro, direccion, observaciones, id_tipo_empresa)
+        VALUES (v_id_empresa, p_nombre_empresa, p_identificacion, p_fecha_ingreso, p_fecha_registro, p_direccion, p_observaciones, p_id_tipo_empresa);
 
-    COMMIT;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al agregar la empresa.');
+    END;
 END;
 /
 
 -- CSP READ Empresa
 CREATE OR REPLACE PROCEDURE obtener_empresas(p_resultados OUT SYS_REFCURSOR) AS
 BEGIN
-    OPEN p_resultados FOR SELECT * FROM empresa;
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM empresa;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener las empresas.');
+    END;
 END;
 /
+
 
 -- CSP UPDATE Empresa
 CREATE OR REPLACE PROCEDURE actualizar_empresa(
@@ -311,19 +341,25 @@ CREATE OR REPLACE PROCEDURE actualizar_empresa(
     p_id_tipo_empresa IN empresa.id_tipo_empresa%TYPE
 ) AS
 BEGIN
-    UPDATE empresa
-    SET nombre_empresa = p_nombre_empresa,
-        identificacion = p_identificacion,
-        fecha_ingreso = p_fecha_ingreso,
-        fecha_registro = p_fecha_registro,
-        direccion = p_direccion,
-        observaciones = p_observaciones,
-        id_tipo_empresa = p_id_tipo_empresa
-    WHERE id_empresa = p_id_empresa;
-    
-    COMMIT;
+    BEGIN
+        UPDATE empresa
+        SET nombre_empresa = p_nombre_empresa,
+            identificacion = p_identificacion,
+            fecha_ingreso = p_fecha_ingreso,
+            fecha_registro = p_fecha_registro,
+            direccion = p_direccion,
+            observaciones = p_observaciones,
+            id_tipo_empresa = p_id_tipo_empresa
+        WHERE id_empresa = p_id_empresa;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al actualizar la empresa.');
+    END;
 END;
 /
+
 
 -- CSP DELETE Empresa
 CREATE OR REPLACE PROCEDURE eliminar_empresa(p_id_empresa IN empresa.id_empresa%TYPE) AS
@@ -347,20 +383,30 @@ CREATE OR REPLACE PROCEDURE agregar_unidad(
 ) AS
     v_id_placa unidades.id_placa%TYPE;
 BEGIN
-    -- id automatico
-    SELECT secuencia_unidad.NEXTVAL INTO v_id_placa FROM dual;
+    BEGIN
+        -- id automático
+        SELECT secuencia_unidad.NEXTVAL INTO v_id_placa FROM dual;
 
-    INSERT INTO unidades (id_placa, id_estado_unidad, id_empresa, unidad_year, capacidad_carga, chasis, descripcion)
-    VALUES (v_id_placa, p_id_estado_unidad, p_id_empresa, p_unidad_year, p_capacidad_carga, p_chasis, p_descripcion);
-
-    COMMIT;
+        INSERT INTO unidades (id_placa, id_estado_unidad, id_empresa, unidad_year, capacidad_carga, chasis, descripcion)
+        VALUES (v_id_placa, p_id_estado_unidad, p_id_empresa, p_unidad_year, p_capacidad_carga, p_chasis, p_descripcion);
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al agregar la unidad.');
+    END;
 END;
-/
+
 
 -- CSP READ Unidades
 CREATE OR REPLACE PROCEDURE obtener_unidades(p_resultados OUT SYS_REFCURSOR) AS
 BEGIN
-    OPEN p_resultados FOR SELECT * FROM unidades;
+    BEGIN
+        OPEN p_resultados FOR SELECT * FROM unidades;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener las unidades.');
+    END;
 END;
 /
 
@@ -383,7 +429,6 @@ BEGIN
         chasis = p_chasis,
         descripcion = p_descripcion
     WHERE id_placa = p_id_placa;
-
     COMMIT;
 END;
 /
@@ -391,8 +436,14 @@ END;
 -- CSP DELETE Unidad
 CREATE OR REPLACE PROCEDURE eliminar_unidad(p_id_placa IN unidades.id_placa%TYPE) AS
 BEGIN
-    DELETE FROM unidades WHERE id_placa = p_id_placa;
-    COMMIT;
+    BEGIN
+        DELETE FROM unidades WHERE id_placa = p_id_placa;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al eliminar la unidad.');
+    END;
 END;
 /
 
@@ -584,7 +635,6 @@ DROP VIEW NOMBRE_VISTA;
 
 
 
-
 --------------------------------------------------------------------------------------------------------------------------------------
     --FUNCIONES DE LA BASE DE DATOS (15):
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -610,23 +660,39 @@ END;
 CREATE OR REPLACE FUNCTION insertar_tipo_empresa(p_tipo_empresa VARCHAR2) RETURN NUMBER IS
     v_id_tipo_empresa NUMBER;
 BEGIN
-    INSERT INTO Tipo_Empresa(tipo_empresa) VALUES (p_tipo_empresa)
-    RETURNING id_tipo_empresa INTO v_id_tipo_empresa;
+    BEGIN
+        INSERT INTO Tipo_Empresa(tipo_empresa) VALUES (p_tipo_empresa)
+        RETURNING id_tipo_empresa INTO v_id_tipo_empresa;
 
-    RETURN v_id_tipo_empresa;
+        RETURN v_id_tipo_empresa;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al insertar el tipo de empresa.');
+            RETURN NULL; 
+    END;
 END;
 /
+
     
 --INSERTAR ESTADO UNIDAD
 CREATE OR REPLACE FUNCTION insertar_estado_unidad(p_estado_unidad VARCHAR2) RETURN NUMBER IS
     v_id_estado_unidad NUMBER;
 BEGIN
-    INSERT INTO Estado_Unidad(estado_unidad) VALUES (p_estado_unidad)
-    RETURNING id_estado_unidad INTO v_id_estado_unidad;
+    BEGIN
+        INSERT INTO Estado_Unidad(estado_unidad) VALUES (p_estado_unidad)
+        RETURNING id_estado_unidad INTO v_id_estado_unidad;
 
-    RETURN v_id_estado_unidad;
+        RETURN v_id_estado_unidad;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('Error al insertar el estado de unidad.');
+            RETURN NULL; 
+    END;
 END;
 /
+
     
 --INSERTAR EMPLEADO
 CREATE OR REPLACE FUNCTION insertar_empleado(p_nombre_empleado VARCHAR2, p_apellido_empleado VARCHAR2, p_identificacion_empleado NUMBER, p_id_direccion NUMBER) RETURN NUMBER IS
@@ -644,11 +710,20 @@ END;
 CREATE OR REPLACE FUNCTION obtener_direccion_por_id(p_id_direccion NUMBER) RETURN Direccion%ROWTYPE IS
     v_direccion Direccion%ROWTYPE;
 BEGIN
-    SELECT * INTO v_direccion FROM Direccion WHERE id_direccion = p_id_direccion;
+    BEGIN
+        SELECT * INTO v_direccion FROM Direccion WHERE id_direccion = p_id_direccion;
 
-    RETURN v_direccion;
+        RETURN v_direccion;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN NULL; 
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener la dirección.');
+            RETURN NULL; 
+    END;
 END;
 /
+
     
 --OBTENER TIPO EMPRESA POR ID
 CREATE OR REPLACE FUNCTION obtener_tipo_empresa_por_id(p_id_tipo_empresa NUMBER) RETURN Tipo_Empresa%ROWTYPE IS
@@ -1027,14 +1102,19 @@ CREATE OR REPLACE PROCEDURE obtener_todos_los_empleados IS
         SELECT * FROM Empleado;
     v_empleado Empleado%ROWTYPE;
 BEGIN
-    OPEN c_empleados;
-    LOOP
-        FETCH c_empleados INTO v_empleado;
-        EXIT WHEN c_empleados%NOTFOUND;
-        -- Realizar operaciones con los datos del empleado
-        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
-    END LOOP;
-    CLOSE c_empleados;
+    BEGIN
+        OPEN c_empleados;
+        LOOP
+            FETCH c_empleados INTO v_empleado;
+            EXIT WHEN c_empleados%NOTFOUND;
+            -- Realizar operaciones con los datos del empleado
+            DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
+        END LOOP;
+        CLOSE c_empleados;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener los empleados.');
+    END;
 END;
 /
 
@@ -1043,14 +1123,18 @@ CREATE OR REPLACE PROCEDURE obtener_empleados_por_identificacion(p_identificacio
         SELECT * FROM Empleado WHERE identificacion_empleado > p_identificacion;
     v_empleado Empleado%ROWTYPE;
 BEGIN
-    OPEN c_empleados_identificacion;
-    LOOP
-        FETCH c_empleados_identificacion INTO v_empleado;
-        EXIT WHEN c_empleados_identificacion%NOTFOUND;
-        -- Realizar operaciones con los datos del empleado
-        DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
-    END LOOP;
-    CLOSE c_empleados_identificacion;
+    BEGIN
+        OPEN c_empleados_identificacion;
+        LOOP
+            FETCH c_empleados_identificacion INTO v_empleado;
+            EXIT WHEN c_empleados_identificacion%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('ID Empleado: ' || v_empleado.id_empleado || ', Nombre: ' || v_empleado.nombre_empleado);
+        END LOOP;
+        CLOSE c_empleados_identificacion;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener los empleados por identificación.');
+    END;
 END;
 /
 
@@ -1059,14 +1143,18 @@ CREATE OR REPLACE PROCEDURE obtener_direcciones_por_referencias(p_referencias VA
         SELECT * FROM Direccion WHERE referencias = p_referencias;
     v_direccion Direccion%ROWTYPE;
 BEGIN
-    OPEN c_direcciones_referencias;
-    LOOP
-        FETCH c_direcciones_referencias INTO v_direccion;
-        EXIT WHEN c_direcciones_referencias%NOTFOUND;
-        -- Realizar operaciones con los datos de la direcciÃ³n
-        DBMS_OUTPUT.PUT_LINE('ID DirecciÃ³n: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
-    END LOOP;
-    CLOSE c_direcciones_referencias;
+    BEGIN
+        OPEN c_direcciones_referencias;
+        LOOP
+            FETCH c_direcciones_referencias INTO v_direccion;
+            EXIT WHEN c_direcciones_referencias%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('ID Dirección: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
+        END LOOP;
+        CLOSE c_direcciones_referencias;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener las direcciones por referencias.');
+    END;
 END;
 /
 
@@ -1075,14 +1163,18 @@ CREATE OR REPLACE PROCEDURE obtener_tipos_empresa(p_tipo_empresa VARCHAR2) IS
         SELECT * FROM Tipo_Empresa WHERE tipo_empresa = p_tipo_empresa;
     v_tipo_empresa Tipo_Empresa%ROWTYPE;
 BEGIN
-    OPEN c_tipos_empresa;
-    LOOP
-        FETCH c_tipos_empresa INTO v_tipo_empresa;
-        EXIT WHEN c_tipos_empresa%NOTFOUND;
-        -- Realizar operaciones con los datos del tipo de empresa
-        DBMS_OUTPUT.PUT_LINE('ID Tipo Empresa: ' || v_tipo_empresa.id_tipo_empresa || ', Tipo Empresa: ' || v_tipo_empresa.tipo_empresa);
-    END LOOP;
-    CLOSE c_tipos_empresa;
+    BEGIN
+        OPEN c_tipos_empresa;
+        LOOP
+            FETCH c_tipos_empresa INTO v_tipo_empresa;
+            EXIT WHEN c_tipos_empresa%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('ID Tipo Empresa: ' || v_tipo_empresa.id_tipo_empresa || ', Tipo Empresa: ' || v_tipo_empresa.tipo_empresa);
+        END LOOP;
+        CLOSE c_tipos_empresa;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener los tipos de empresa.');
+    END;
 END;
 /
 
@@ -1091,16 +1183,21 @@ CREATE OR REPLACE PROCEDURE obtener_estados_unidad(p_estado_unidad VARCHAR2) IS
         SELECT * FROM Estado_Unidad WHERE estado_unidad = p_estado_unidad;
     v_estado_unidad Estado_Unidad%ROWTYPE;
 BEGIN
-    OPEN c_estados_unidad;
-    LOOP
-        FETCH c_estados_unidad INTO v_estado_unidad;
-        EXIT WHEN c_estados_unidad%NOTFOUND;
-        -- Realizar operaciones con los datos del estado de la unidad
-        DBMS_OUTPUT.PUT_LINE('ID Estado Unidad: ' || v_estado_unidad.id_estado_unidad || ', Estado Unidad: ' || v_estado_unidad.estado_unidad);
-    END LOOP;
-    CLOSE c_estados_unidad;
+    BEGIN
+        OPEN c_estados_unidad;
+        LOOP
+            FETCH c_estados_unidad INTO v_estado_unidad;
+            EXIT WHEN c_estados_unidad%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('ID Estado Unidad: ' || v_estado_unidad.id_estado_unidad || ', Estado Unidad: ' || v_estado_unidad.estado_unidad);
+        END LOOP;
+        CLOSE c_estados_unidad;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error al obtener los estados de unidad.');
+    END;
 END;
 /
+
 
 
 --FINALIZAN LOS CURSORES - CURSORES - CURSORES - CURSORES - CURSORES - CURSORES
