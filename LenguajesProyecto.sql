@@ -1025,7 +1025,16 @@ END;
 --------------------------------------------------------------------------------------------------------------------------------------
     --TRIGGERS DE LA BASE DE DATOS (15):
 --------------------------------------------------------------------------------------------------------------------------------------
-
+--BE
+CREATE OR REPLACE TRIGGER tr_direccion_trigger
+AFTER INSERT ON Direccion
+FOR EACH ROW 
+DECLARE
+BEGIN
+    INSERT INTO estado_unidad (estado_unidad) VALUES ('Trigger tr_direccion_trigger EJECUTADO!');
+END;
+/
+    
 CREATE OR REPLACE TRIGGER tr_direccion_insert
 AFTER INSERT ON Direccion
 FOR EACH ROW
