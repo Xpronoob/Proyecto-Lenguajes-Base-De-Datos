@@ -95,7 +95,7 @@ BEGIN
     -- Confirmar los cambios
     COMMIT;
     
-    -- Mostrar mensaje de Ã©xito
+    -- Mostrar mensaje de ÃƒÂ©xito
     DBMS_OUTPUT.PUT_LINE('Procedimiento almacenado ejecutado correctamente');
 EXCEPTION
     WHEN OTHERS THEN
@@ -127,7 +127,7 @@ BEGIN
     EXCEPTION
         WHEN OTHERS THEN
             ROLLBACK;
-            DBMS_OUTPUT.PUT_LINE('Error al actualizar la direcci�n.');
+            DBMS_OUTPUT.PUT_LINE('Error al actualizar la dirección.');
     END;
 END;
 /
@@ -141,7 +141,7 @@ BEGIN
     EXCEPTION
         WHEN OTHERS THEN
             ROLLBACK;
-            DBMS_OUTPUT.PUT_LINE('Error al eliminar la direcci�n.');
+            DBMS_OUTPUT.PUT_LINE('Error al eliminar la dirección.');
     END;
 END;
 /
@@ -301,7 +301,7 @@ CREATE OR REPLACE PROCEDURE agregar_empresa(
     v_id_empresa empresa.id_empresa%TYPE;
 BEGIN
     BEGIN
-        -- id autom�tico
+        -- id automático
         SELECT secuencia_empresa.NEXTVAL INTO v_id_empresa FROM dual;
 
         INSERT INTO empresa (id_empresa, nombre_empresa, identificacion, fecha_ingreso, fecha_registro, direccion, observaciones, id_tipo_empresa)
@@ -384,7 +384,7 @@ CREATE OR REPLACE PROCEDURE agregar_unidad(
     v_id_placa unidades.id_placa%TYPE;
 BEGIN
     BEGIN
-        -- id autom�tico
+        -- id automático
         SELECT secuencia_unidad.NEXTVAL INTO v_id_placa FROM dual;
 
         INSERT INTO unidades (id_placa, id_estado_unidad, id_empresa, unidad_year, capacidad_carga, chasis, descripcion)
@@ -455,24 +455,24 @@ CREATE OR REPLACE VIEW vw_direccion_info AS
 SELECT id_direccion, referencias
 FROM Direccion;
 
--- Crear la funciÃ³n
+-- Crear la funciÃƒÂ³n
 CREATE OR REPLACE FUNCTION obtener_informacion(parametro IN VARCHAR2) RETURN VARCHAR2 IS
     resultado_info VARCHAR2(100);
 BEGIN
-    -- LÃ³gica de la funciÃ³n obtener_informacion
+    -- LÃƒÂ³gica de la funciÃƒÂ³n obtener_informacion
     -- Asignar el resultado a la variable resultado_info
     RETURN resultado_info;
 END;
 /
 
--- Crear el procedimiento almacenado con funciÃ³n y cursor
+-- Crear el procedimiento almacenado con funciÃƒÂ³n y cursor
 CREATE OR REPLACE PROCEDURE obtener_datos_direccion(p_resultados OUT SYS_REFCURSOR) AS
-    -- Declarar el cursor explÃ­cito
+    -- Declarar el cursor explÃƒÂ­cito
     CURSOR c_datos_direccion IS
         SELECT * FROM vw_direccion_info; -- Utilizar la vista vw_direccion_info en lugar de la tabla directamente
     v_id_direccion Direccion.id_direccion%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
     v_referencias Direccion.referencias%TYPE; -- Utilizar el tipo de dato de la tabla Direccion
-    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la funciÃ³n obtener_informacion
+    v_informacion VARCHAR2(100); -- Variable para almacenar el resultado de la funciÃƒÂ³n obtener_informacion
 BEGIN
     -- Abrir el cursor
     OPEN c_datos_direccion;
@@ -481,13 +481,13 @@ BEGIN
     LOOP
         -- Obtener los datos de la fila actual
         FETCH c_datos_direccion INTO v_id_direccion, v_referencias;
-        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay mÃ¡s filas
+        EXIT WHEN c_datos_direccion%NOTFOUND;  -- Salir del bucle si no hay mÃƒÂ¡s filas
         
-        -- LÃ³gica adicional y llamada a la funciÃ³n obtener_informacion
-        -- Utilizar los datos de la fila y llamar a la funciÃ³n obtener_informacion
+        -- LÃƒÂ³gica adicional y llamada a la funciÃƒÂ³n obtener_informacion
+        -- Utilizar los datos de la fila y llamar a la funciÃƒÂ³n obtener_informacion
         v_informacion := obtener_informacion(v_referencias);
         
-        -- Realizar otras operaciones o lÃ³gica
+        -- Realizar otras operaciones o lÃƒÂ³gica
         -- ...
         
         -- Imprimir los resultados o hacer lo que necesites con ellos
@@ -498,7 +498,7 @@ BEGIN
     -- Cerrar el cursor
     CLOSE c_datos_direccion;
     
-    -- Asignar el cursor al parÃ¡metro de salida
+    -- Asignar el cursor al parÃƒÂ¡metro de salida
     OPEN p_resultados FOR SELECT * FROM DUAL;
 END;
 /
@@ -512,6 +512,11 @@ END;
 --------------------------------------------------------------------------------------------------------------------------------------
     --VISTAS DE LA BASE DE DATOS (10):
 --------------------------------------------------------------------------------------------------------------------------------------
+--BE
+CREATE OR REPLACE VIEW Imprimir_Empleados_Vista AS
+SELECT id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado
+FROM Empleado;
+SELECT * FROM Imprimir_Empleados_Vista;
 
     --EMPLEADOS:
 --Vista para ver todos los Empleados (Funciona parecido a Select * FROM)
@@ -526,7 +531,7 @@ SELECT COUNT(*) AS total_empleados
 FROM Empleado;
 SELECT total_empleados FROM Contador_Empleados_Vista;
 
---Vista para acceder a los registros de empleado y a la vez a direcciÃ³n.
+--Vista para acceder a los registros de empleado y a la vez a direcciÃƒÂ³n.
 CREATE VIEW Empleados_Direccion_Vista AS
 SELECT e.id_empleado, e.nombre_empleado, e.apellido_empleado, e.identificacion_empleado, d.id_direccion, d.referencias
 FROM Empleado e
@@ -544,7 +549,7 @@ CREATE VIEW Contador_Unidades_Vista AS
 SELECT * FROM Unidades;
 SELECT COUNT(*) AS contador_unidades FROM Contador_Unidades_Vista;
 
---Vista para mostrar la Unidad pero tambiÃ©n, a la empresa que pertenece y su estado.
+--Vista para mostrar la Unidad pero tambiÃƒÂ©n, a la empresa que pertenece y su estado.
 CREATE VIEW Unidades_EstadoEmpresa_Vista AS
 SELECT u.id_placa, u.descripcion, u.id_empresa, u.id_estado_unidad, eu.estado_unidad
 FROM Unidades u
@@ -572,7 +577,7 @@ SELECT * FROM Empresa;
 
 SELECT COUNT(*) AS contador_empresa FROM Contador_Empresa_Vista;
 
---Vista para acceder a los registros de empresa, pero tambiÃ©n a los registros de su tabla miscelanea.
+--Vista para acceder a los registros de empresa, pero tambiÃƒÂ©n a los registros de su tabla miscelanea.
 CREATE VIEW Empresa_TipoEmpresa_Vista AS
 SELECT e.id_empresa, e.nombre_empresa, e.fecha_ingreso, e.fecha_registro, e.observaciones, te.id_tipo_empresa, te.tipo_empresa
 FROM Empresa e
@@ -590,8 +595,8 @@ SELECT * FROM Pedidos;
 
 SELECT COUNT(*) AS contador_pedidos FROM Contador_Pedidos_Vista;
 
---Vista que para ver la fecha de ingreso mÃ¡s reciente de los registros con id.
---AdemÃ¡s, la fecha en otra columna de la fecha limite.
+--Vista que para ver la fecha de ingreso mÃƒÂ¡s reciente de los registros con id.
+--AdemÃƒÂ¡s, la fecha en otra columna de la fecha limite.
 
 CREATE VIEW Pedidos_Fechas_Vista AS
 SELECT id_pedido, MAX(fecha_ingreso) AS fecha_ingreso_actual, limite_entrega AS Entrega_Limite
@@ -611,11 +616,11 @@ SELECT 'Estado_Unidad' AS tabla, id_estado_unidad AS id, estado_unidad AS inform
 UNION ALL
 SELECT 'Empleado' AS tabla, id_empleado AS id, nombre_empleado || ' ' || apellido_empleado AS informacion FROM Empleado
 UNION ALL
-SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', IdentificaciÃ³n: ' || identificacion AS informacion FROM Empresa
+SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', IdentificaciÃƒÂ³n: ' || identificacion AS informacion FROM Empresa
 UNION ALL
-SELECT 'Unidades' AS tabla, id_placa AS id, 'AÃ±o: ' || unidad_year || ', Capacidad de carga: ' || capacidad_carga AS informacion FROM Unidades
+SELECT 'Unidades' AS tabla, id_placa AS id, 'AÃƒÂ±o: ' || unidad_year || ', Capacidad de carga: ' || capacidad_carga AS informacion FROM Unidades
 UNION ALL
-SELECT 'Pedidos' AS tabla, id_pedido AS id, 'Cliente: ' || nombre_empresa_cliente || ', Fecha ingreso: ' || fecha_ingreso || ', Fecha lÃ­mite: ' || limite_entrega AS informacion FROM Pedidos;
+SELECT 'Pedidos' AS tabla, id_pedido AS id, 'Cliente: ' || nombre_empresa_cliente || ', Fecha ingreso: ' || fecha_ingreso || ', Fecha lÃƒÂ­mite: ' || limite_entrega AS informacion FROM Pedidos;
 
 SELECT *
 FROM BaseDeDatos_VistaGeneral;
@@ -644,6 +649,19 @@ DROP VIEW NOMBRE_VISTA;
 --------------------------------------------------------------------------------------------------------------------------------------
     --FUNCIONES DE LA BASE DE DATOS (15):
 --------------------------------------------------------------------------------------------------------------------------------------
+--BE
+CREATE OR REPLACE FUNCTION obtener_empleados_sin_direccion
+RETURN SYS_REFCURSOR
+AS
+    v_resultado SYS_REFCURSOR;
+BEGIN
+    OPEN v_resultado FOR
+    SELECT id_empleado, nombre_empleado, apellido_empleado, identificacion_empleado
+    FROM Empleado;
+    
+    RETURN v_resultado;
+END;
+/
 
 --INSERTAR DIRECCION
     CREATE OR REPLACE FUNCTION insertar_direccion(p_referencias VARCHAR2) RETURN NUMBER IS
@@ -718,7 +736,7 @@ BEGIN
         WHEN NO_DATA_FOUND THEN
             RETURN NULL; 
         WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Error al obtener la direcci�n.');
+            DBMS_OUTPUT.PUT_LINE('Error al obtener la dirección.');
             RETURN NULL; 
     END;
 END;
@@ -957,11 +975,11 @@ BEGIN
     UNION ALL
     SELECT 'Empleado' AS tabla, id_empleado AS id, nombre_empleado || ' ' || apellido_empleado AS informacion FROM Empleado
     UNION ALL
-    SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', IdentificaciÃ³n: ' || identificacion AS informacion FROM Empresa
+    SELECT 'Empresa' AS tabla, id_empresa AS id, nombre_empresa || ', IdentificaciÃƒÂ³n: ' || identificacion AS informacion FROM Empresa
     UNION ALL
-    SELECT 'Unidades' AS tabla, id_placa AS id, CONCAT('AÃ±o: ', unidad_year, ', Capacidad de carga: ', capacidad_carga) AS informacion FROM Unidades
+    SELECT 'Unidades' AS tabla, id_placa AS id, CONCAT('AÃƒÂ±o: ', unidad_year, ', Capacidad de carga: ', capacidad_carga) AS informacion FROM Unidades
     UNION ALL
-    SELECT 'Pedidos' AS tabla, id_pedido AS id, CONCAT('Cliente: ', nombre_empresa_cliente, ', Fecha ingreso: ', fecha_ingreso, ', Fecha lÃ­mite: ', limite_entrega) AS informacion FROM Pedidos;
+    SELECT 'Pedidos' AS tabla, id_pedido AS id, CONCAT('Cliente: ', nombre_empresa_cliente, ', Fecha ingreso: ', fecha_ingreso, ', Fecha lÃƒÂ­mite: ', limite_entrega) AS informacion FROM Pedidos;
 
   RETURN c_result;
 END;
@@ -980,8 +998,8 @@ BEGIN
     FETCH v_cursor INTO v_tabla, v_id, v_informacion;
     EXIT WHEN v_cursor%NOTFOUND;
     -- Realiza las operaciones necesarias con los datos obtenidos
-    -- AquÃ­ puedes imprimir los valores, almacenarlos en variables, etc.
-    DBMS_OUTPUT.PUT_LINE('Tabla: ' || v_tabla || ', ID: ' || v_id || ', InformaciÃ³n: ' || v_informacion);
+    -- AquÃƒÂ­ puedes imprimir los valores, almacenarlos en variables, etc.
+    DBMS_OUTPUT.PUT_LINE('Tabla: ' || v_tabla || ', ID: ' || v_id || ', InformaciÃƒÂ³n: ' || v_informacion);
   END LOOP;
 
   CLOSE v_cursor;
@@ -1012,18 +1030,18 @@ CREATE OR REPLACE TRIGGER tr_direccion_insert
 AFTER INSERT ON Direccion
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Nueva dirección insertada. ID de dirección: ' || :NEW.id_direccion || ', Referencias: ' || :NEW.referencias);
+    DBMS_OUTPUT.PUT_LINE('Nueva direcciÃ³n insertada. ID de direcciÃ³n: ' || :NEW.id_direccion || ', Referencias: ' || :NEW.referencias);
 END;
 /
 SET SERVEROUTPUT ON
 
--- Insertar una nueva dirección
+-- Insertar una nueva direcciÃ³n
 INSERT INTO Direccion (referencias)
 VALUES ('Calle Principal #123, Ciudad');
 
 
 INSERT INTO Empleado (nombre_empleado, apellido_empleado, identificacion_empleado, id_direccion)
-VALUES ('Juan', 'Pérez', 123456789, 3);
+VALUES ('Juan', 'PÃ©rez', 123456789, 3);
 
 CREATE OR REPLACE TRIGGER tr_empleado_update_apellido
 BEFORE UPDATE OF apellido_empleado ON Empleado
@@ -1043,7 +1061,7 @@ CREATE OR REPLACE TRIGGER tr_direccion_delete
 AFTER DELETE ON Direccion
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Dirección eliminada. ID de dirección: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
+    DBMS_OUTPUT.PUT_LINE('DirecciÃ³n eliminada. ID de direcciÃ³n: ' || :OLD.id_direccion || ', Referencias: ' || :OLD.referencias);
 END;
 /
 
@@ -1133,7 +1151,7 @@ BEGIN
         CLOSE c_empleados_identificacion;
     EXCEPTION
         WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Error al obtener los empleados por identificaci�n.');
+            DBMS_OUTPUT.PUT_LINE('Error al obtener los empleados por identificación.');
     END;
 END;
 /
@@ -1148,7 +1166,7 @@ BEGIN
         LOOP
             FETCH c_direcciones_referencias INTO v_direccion;
             EXIT WHEN c_direcciones_referencias%NOTFOUND;
-            DBMS_OUTPUT.PUT_LINE('ID Direcci�n: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
+            DBMS_OUTPUT.PUT_LINE('ID Dirección: ' || v_direccion.id_direccion || ', Referencias: ' || v_direccion.referencias);
         END LOOP;
         CLOSE c_direcciones_referencias;
     EXCEPTION
@@ -1217,7 +1235,7 @@ END;
 
 
 
---Código de pruebas: 
+--CÃ³digo de pruebas: 
 ------------OLD---------------OLD------------------OLD-----------------------OLD
 select * from EMPLEADO;
 SELECT * FROM DIRECCION;
@@ -1248,7 +1266,7 @@ select * from ESTADO_UNIDAD;
 -----------------------------
 ---Paquete para la vista y funcion de Empleados
 CREATE OR REPLACE PACKAGE PAQUETE_BACKEND AS
-    -- Definición de la función en la especificación del paquete
+    -- DefiniciÃ³n de la funciÃ³n en la especificaciÃ³n del paquete
     FUNCTION obtener_empleados_sin_direccion
     RETURN SYS_REFCURSOR;
     
@@ -1256,7 +1274,7 @@ END PAQUETE_BACKEND;
 /
 
 CREATE OR REPLACE PACKAGE BODY PAQUETE_BACKEND AS
-    -- Implementación de la función
+    -- ImplementaciÃ³n de la funciÃ³n
     FUNCTION obtener_empleados_sin_direccion
     RETURN SYS_REFCURSOR AS
         v_resultado SYS_REFCURSOR;
@@ -1273,7 +1291,7 @@ END PAQUETE_BACKEND;
 
 ----Paquete Procedure Direccion
 CREATE OR REPLACE PACKAGE PAQUETE_DIRECCION AS
-    -- Procedure para agregar una dirección
+    -- Procedure para agregar una direcciÃ³n
     PROCEDURE agregar_direccion(
         p_referencias IN direccion.referencias%TYPE
     );
@@ -1283,13 +1301,13 @@ CREATE OR REPLACE PACKAGE PAQUETE_DIRECCION AS
         p_resultados OUT SYS_REFCURSOR
     );
     
-    -- Procedure para actualizar una dirección
+    -- Procedure para actualizar una direcciÃ³n
     PROCEDURE actualizar_direccion(
         p_id_direccion IN direccion.id_direccion%TYPE,
         p_referencias IN direccion.referencias%TYPE
     );
     
-    -- Procedure para eliminar una dirección
+    -- Procedure para eliminar una direcciÃ³n
     PROCEDURE eliminar_direccion(
         p_id_direccion IN direccion.id_direccion%TYPE
     );
@@ -1298,7 +1316,7 @@ END PAQUETE_DIRECCION;
 /
 ----BODY
 CREATE OR REPLACE PACKAGE BODY PAQUETE_DIRECCION AS
-    -- Procedure para agregar una dirección
+    -- Procedure para agregar una direcciÃ³n
     PROCEDURE agregar_direccion(
         p_referencias IN direccion.referencias%TYPE
     ) AS
@@ -1320,7 +1338,7 @@ CREATE OR REPLACE PACKAGE BODY PAQUETE_DIRECCION AS
         OPEN p_resultados FOR SELECT * FROM direccion;
     END obtener_direcciones;
     
-    -- Procedure para actualizar una dirección
+    -- Procedure para actualizar una direcciÃ³n
     PROCEDURE actualizar_direccion(
         p_id_direccion IN direccion.id_direccion%TYPE,
         p_referencias IN direccion.referencias%TYPE
@@ -1332,7 +1350,7 @@ CREATE OR REPLACE PACKAGE BODY PAQUETE_DIRECCION AS
         COMMIT;
     END actualizar_direccion;
     
-    -- Procedure para eliminar una dirección
+    -- Procedure para eliminar una direcciÃ³n
     PROCEDURE eliminar_direccion(
         p_id_direccion IN direccion.id_direccion%TYPE
     ) AS
