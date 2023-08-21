@@ -53,7 +53,7 @@
         <h1>Actualizar Tipo de Empresa</h1>
         <form th:action="@{/tipo-empresas/{id}/editar(id=${tipoEmpresa.idTipoEmpresa})}" method="post">
             <label for="tipoEmpresa">Nuevo Tipo de Empresa:</label>
-            <input type="text" id="tipoEmpresa" name="tipoEmpresa" value="" required>
+            <input type="text" id="tipoEmpresa" name="tipoEmpresa" th:value="${tipoEmpresa.tipoEmpresa}" required>
             <button type="submit">Guardar cambios</button>
         </form>
     </div>

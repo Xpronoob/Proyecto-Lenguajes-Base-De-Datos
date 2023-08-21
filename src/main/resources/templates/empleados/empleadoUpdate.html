@@ -52,13 +52,13 @@
         <h1>Editar Empleado</h1>
         <form th:action="@{/empleados/{id}/editar(id=${empleado.idEmpleado})}" method="post">
             <label for="nombre">Nuevo Nombre:</label>
-            <input type="text" id="nombre" name="nombre" value="" required>
+            <input type="text" id="nombre" name="nombre" th:value="${empleado.nombreEmpleado}" required>
             <label for="apellido">Nuevo Apellido:</label>
-            <input type="text" id="apellido" name="apellido" value="" required>
+            <input type="text" id="apellido" name="apellido" th:value="${empleado.apellidoEmpleado}" required>
             <label for="identificacion">Nueva Identificación:</label>
-            <input type="text" id="identificacion" name="identificacion" value="" required>
+            <input type="text" id="identificacion" name="identificacion" th:value="${empleado.identificacionEmpleado}" required>
             <label for="idDireccion">Nuevo ID Dirección:</label>
-            <input type="text" id="idDireccion" name="idDireccion" value="" required>
+            <input type="text" id="idDireccion" name="idDireccion" th:value="${empleado.direccion.idDireccion}" required>
             <button type="submit">Guardar cambios</button>
         </form>
     </div>

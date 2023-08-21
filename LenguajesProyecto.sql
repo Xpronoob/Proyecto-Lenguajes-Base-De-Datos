@@ -82,28 +82,6 @@ BEGIN
     COMMIT;
 END;
 /
---INPUT/OUTPUT--
-DECLARE
-    p_referencias direccion.referencias%TYPE;
-BEGIN
-    -- Asignar el valor de referencias
-    p_referencias := 'Ejemplo Direcccion';
-
-    -- Ejecutar el procedimiento almacenado
-    agregar_direccion(p_referencias);
-    
-    -- Confirmar los cambios
-    COMMIT;
-    
-    -- Mostrar mensaje de ÃƒÂ©xito
-    DBMS_OUTPUT.PUT_LINE('Procedimiento almacenado ejecutado correctamente');
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Mostrar mensaje de error
-        DBMS_OUTPUT.PUT_LINE('Error al ejecutar el procedimiento almacenado: ' || SQLERRM);
-        ROLLBACK;
-END;
-/
 --------------------------------------------------------------------
 ----CSP READ Direccion
 CREATE OR REPLACE PROCEDURE OBTENER_DIRECCIONES(p_resultados OUT SYS_REFCURSOR) AS

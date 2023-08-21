@@ -53,7 +53,7 @@
         <h1>Actualizar Estado de Unidad</h1>
         <form th:action="@{/estado-unidades/{id}/editar(id=${estadoUnidad.idEstadoUnidad})}" method="post">
             <label for="estadoUnidad">Nuevo Estado de Unidad:</label>
-            <input type="text" id="estadoUnidad" name="estadoUnidad" value="" required>
+            <input type="text" id="estadoUnidad" name="estadoUnidad" th:value="${estadoUnidad.estadoUnidad}" required>
             <button type="submit">Guardar cambios</button>
         </form>
     </div>
